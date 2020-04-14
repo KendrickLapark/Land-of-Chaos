@@ -29,8 +29,9 @@ public class PrimerMundo implements Screen {
 
     public PrimerMundo(Juego j){
         this.juego = j;
-        camara = new OrthographicCamera(20,20);
-        mapa = new TmxMapLoader().load("mapa/primermapa.tmx");
+        camara = new OrthographicCamera(200,100);
+        world = new World(new Vector2(0,-9.8f),true);
+        mapa = new TmxMapLoader().load("mapa/m1,2.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa,1/16f);
 
         for (MapObject objeto:mapa.getLayers().get("suelo").getObjects()){
@@ -58,6 +59,9 @@ public class PrimerMundo implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+
+        camara.update();
+        renderer.setView(camara);
 
         renderer.render();
 
