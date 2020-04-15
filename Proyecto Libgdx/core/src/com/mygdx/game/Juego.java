@@ -11,10 +11,12 @@ import com.mygdx.game.pantallas.PrimerMundo;
 
 public class Juego extends Game {
 
+	public SpriteBatch batch;
 	Screen pantallaActual;
 
 	@Override
 	public void create () {
+		batch = new SpriteBatch();
 		setScreen(new PrimerMundo(this));
 	}
 

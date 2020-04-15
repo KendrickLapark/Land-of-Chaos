@@ -17,24 +17,33 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 
 public class PrimerMundo implements Screen {
 
     private Juego juego;
     private World world;
+
     private TiledMap mapa; //Mapa del juego
+
+    private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
 
     public PrimerMundo(Juego j){
         this.juego = j;
-        camara = new OrthographicCamera(200,100);
+        camara = new OrthographicCamera();
+        viewport = new StretchViewport(300,180,camara);
         world = new World(new Vector2(0,-9.8f),true);
         mapa = new TmxMapLoader().load("mapa/m1,2.tmx");
-        renderer = new OrthogonalTiledMapRenderer(mapa,1/16f);
+        renderer = new OrthogonalTiledMapRenderer(mapa);
+        camara.position.set(viewport.getScreenWidth()/2, viewport.getScreenHeight()/2,0);
 
-        for (MapObject objeto:mapa.getLayers().get("suelo").getObjects()){
+        /*for (MapObject objeto:mapa.getLayers().get("suelo").getObjects()){
             BodyDef propiedadesRectangulo= new BodyDef(); //Establecemos las propiedades del cuerpo
             propiedadesRectangulo.type = BodyDef.BodyType.StaticBody;
             Body rectanguloSuelo = world.createBody(propiedadesRectangulo);
@@ -43,7 +52,7 @@ public class PrimerMundo implements Screen {
             propiedadesFisicasRectangulo.shape = formaRectanguloSuelo;
             propiedadesFisicasRectangulo.density = 1f;
             rectanguloSuelo.createFixture(propiedadesFisicasRectangulo);
-        }
+        }*/
     }
 
 
@@ -60,6 +69,7 @@ public class PrimerMundo implements Screen {
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
+        juego.batch.setProjectionMatrix(camara.combined);
         camara.update();
         renderer.setView(camara);
 
@@ -69,7 +79,8 @@ public class PrimerMundo implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
+        camara.position.set(camara.viewportWidth/2,camara.viewportHeight/2,0);
     }
 
     @Override
