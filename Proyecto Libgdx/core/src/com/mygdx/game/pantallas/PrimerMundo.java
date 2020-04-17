@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
@@ -23,10 +24,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 
+import javax.swing.Box;
+
 public class PrimerMundo implements Screen {
 
     private Juego juego;
+
+    //variables Box2d
     private World world;
+    private Box2DDebugRenderer box2DDebugRenderer;
 
     private TiledMap mapa; //Mapa del juego
 
@@ -37,22 +43,33 @@ public class PrimerMundo implements Screen {
     public PrimerMundo(Juego j){
         this.juego = j;
         camara = new OrthographicCamera();
-        viewport = new StretchViewport(300,180,camara);
+        viewport = new FitViewport(300,180,camara);
         world = new World(new Vector2(0,-9.8f),true);
-        mapa = new TmxMapLoader().load("mapa/m1,2.tmx");
+        mapa = new TmxMapLoader().load("mapa/m1,3.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
+
+        box2DDebugRenderer = new Box2DDebugRenderer();
+
         camara.position.set(viewport.getScreenWidth()/2, viewport.getScreenHeight()/2,0);
 
-        /*for (MapObject objeto:mapa.getLayers().get("suelo").getObjects()){
-            BodyDef propiedadesRectangulo= new BodyDef(); //Establecemos las propiedades del cuerpo
-            propiedadesRectangulo.type = BodyDef.BodyType.StaticBody;
-            Body rectanguloSuelo = world.createBody(propiedadesRectangulo);
-            FixtureDef propiedadesFisicasRectangulo=new FixtureDef();
-            Shape formaRectanguloSuelo=getRectangle((RectangleMapObject)objeto);
-            propiedadesFisicasRectangulo.shape = formaRectanguloSuelo;
-            propiedadesFisicasRectangulo.density = 1f;
-            rectanguloSuelo.createFixture(propiedadesFisicasRectangulo);
-        }*/
+        BodyDef bodyDef = new BodyDef();
+        PolygonShape polygonShape = new PolygonShape();
+        FixtureDef fixtureDef = new FixtureDef();
+        Body body;
+
+        for(MapObject object : mapa.getLayers().get("suelo").getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set(rectangle.getX() + rectangle.getWidth()/2, rectangle.getY() + rectangle.getHeight()/2);
+
+            body = world.createBody(bodyDef);
+
+            polygonShape.setAsBox(rectangle.getWidth()/2, rectangle.getHeight()/2 );
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+
+        }
     }
 
 
@@ -69,11 +86,14 @@ public class PrimerMundo implements Screen {
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-        juego.batch.setProjectionMatrix(camara.combined);
+
         camara.update();
         renderer.setView(camara);
 
         renderer.render();
+
+        box2DDebugRenderer.render(world,camara.combined);
+        juego.batch.setProjectionMatrix(camara.combined);
 
     }
 
@@ -112,4 +132,5 @@ public class PrimerMundo implements Screen {
         polygon.setAsBox(rectangle.width * 0.5f /16f, rectangle.height * 0.5f / 16f, size, 0.0f);
         return polygon;
     }
+
 }
