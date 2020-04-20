@@ -11,6 +11,7 @@ import com.mygdx.game.pantallas.PrimerMundo;
 
 public class Juego extends Game {
 
+
 	public SpriteBatch batch;
 	Screen pantallaActual;
 

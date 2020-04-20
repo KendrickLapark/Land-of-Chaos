@@ -24,13 +24,14 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 import com.mygdx.game.actores.Personaje;
+import com.mygdx.game.input.Teclado;
 
 import javax.swing.Box;
 
 public class PrimerMundo implements Screen {
 
     private Juego juego;
-
+    private Teclado teclado;
 
 
     //variables Box2d
@@ -46,15 +47,16 @@ public class PrimerMundo implements Screen {
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
 
 
-
     public PrimerMundo(Juego j){
         this.juego = j;
         camara = new OrthographicCamera();
         viewport = new FitViewport(300,180,camara);
-        world = new World(new Vector2(0,-9.8f),true);
+        world = new World(new Vector2(0,-98f),true);
         mapa = new TmxMapLoader().load("mapa/m1,3.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
+
+
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
@@ -94,8 +96,10 @@ public class PrimerMundo implements Screen {
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
+        p1.mandoTeclado();
 
         camara.update();
+        camara.position.x = p1.body.getPosition().x;
         renderer.setView(camara);
 
         renderer.render();
@@ -133,12 +137,5 @@ public class PrimerMundo implements Screen {
         world.dispose();
     }
 
-    private static PolygonShape getRectangle(RectangleMapObject rectangleObject) {
-        Rectangle rectangle = rectangleObject.getRectangle();
-        PolygonShape polygon = new PolygonShape();
-        Vector2 size = new Vector2((rectangle.x + rectangle.width * 0.5f) /16f, (rectangle.y + rectangle.height * 0.5f ) / 16f);
-        polygon.setAsBox(rectangle.width * 0.5f /16f, rectangle.height * 0.5f / 16f, size, 0.0f);
-        return polygon;
-    }
 
 }
