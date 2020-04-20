@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
+import com.mygdx.game.actores.Personaje;
 
 import javax.swing.Box;
 
@@ -30,15 +31,21 @@ public class PrimerMundo implements Screen {
 
     private Juego juego;
 
+
+
     //variables Box2d
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
 
     private TiledMap mapa; //Mapa del juego
 
+    private Personaje p1;
+
     private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
+
+
 
     public PrimerMundo(Juego j){
         this.juego = j;
@@ -47,6 +54,7 @@ public class PrimerMundo implements Screen {
         world = new World(new Vector2(0,-9.8f),true);
         mapa = new TmxMapLoader().load("mapa/m1,3.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
+        p1 = new Personaje(world);
 
         box2DDebugRenderer = new Box2DDebugRenderer();
 
