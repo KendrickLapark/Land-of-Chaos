@@ -2,6 +2,7 @@ package com.mygdx.game.pantallas;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapObject;
@@ -35,6 +36,8 @@ public class PrimerMundo implements Screen {
 
     private Personaje p1;
 
+    private Music musica;
+
     private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
@@ -48,6 +51,11 @@ public class PrimerMundo implements Screen {
         mapa = new TmxMapLoader().load("mapa/m1,3.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
+
+        musica = Gdx.audio.newMusic(Gdx.files.internal("sonido/musica/dbzInicio.mp3"));
+        musica.play();
+        musica.setVolume(0.03f);
+        musica.setLooping(true);
 
 
 

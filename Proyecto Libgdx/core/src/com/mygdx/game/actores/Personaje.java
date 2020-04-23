@@ -2,6 +2,7 @@ package com.mygdx.game.actores;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -28,7 +29,7 @@ public class Personaje extends Actor {
     public World world;
     public Body body;
     private Sprite sprite;
-    private Sound salto, caida;
+    private Music salto, caida;
     private long ids;
     private Texture standr,standl, runr, runl, jumpr, fallr, jumpl, falll;
 
@@ -45,8 +46,8 @@ public class Personaje extends Actor {
         fallr = new Texture("personajes/gfallr.png");
         falll = new Texture("personajes/gfalll.png");
 
-        salto = Gdx.audio.newSound(Gdx.files.internal("sonido/efectos/salto.mp3"));
-        caida = Gdx.audio.newSound(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
+        salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
+        caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
 
 
         sprite = new Sprite(standr);
@@ -84,35 +85,51 @@ public class Personaje extends Actor {
     }
 
     public void actualizar(){
+
+
+
         if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x>=0){
             dActual = Direccion.DERECHA;
+            ePrevio = eActual;
             eActual = Estado.SALTANDO;
             sprite = new Sprite(jumpr);
 
         }else if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x<0){
             dActual = Direccion.IZQUIERDA;
+            ePrevio = eActual;
             eActual = Estado.SALTANDO;
             sprite = new Sprite(jumpl);
         }else if(body.getLinearVelocity().y <0 && body.getLinearVelocity().x>=0){
             dActual = Direccion.DERECHA;
+            ePrevio = eActual;
             eActual = Estado.CALLENDO;
             sprite = new Sprite(fallr);
         }else if(body.getLinearVelocity().y<0 && body.getLinearVelocity().x<0){
             dActual = Direccion.IZQUIERDA;
+            ePrevio = eActual;
             eActual = Estado.CALLENDO;
             sprite = new Sprite(falll);
         }else if(body.getLinearVelocity().x>0){
             dActual = Direccion.DERECHA;
+            ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
             sprite = new Sprite(runr);
         }else if(body.getLinearVelocity().x<0){
             dActual = Direccion.IZQUIERDA;
+            ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
             sprite = new Sprite(runl);
         }else if(dActual == Direccion.DERECHA){
             sprite = new Sprite(standr);
         }else{
             sprite = new Sprite(standl);
+        }
+
+        if(ePrevio == Estado.CALLENDO && body.getLinearVelocity().y == 0 && body.getPosition().y<21){
+            ePrevio = eActual;
+            eActual = Estado.ENLASUPERFICIE;
+            caida.play();
+            caida.setVolume(0.02f);
         }
     }
 
@@ -130,6 +147,11 @@ public class Personaje extends Actor {
         if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
             body.applyLinearImpulse(new Vector2(0,80),body.getWorldCenter(),true);
             salto.play();
+            salto.setVolume(0.02f);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
+            body.setLinearVelocity(0,0);
         }
     }
 
