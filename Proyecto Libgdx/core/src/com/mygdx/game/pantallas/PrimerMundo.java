@@ -16,24 +16,17 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 import com.mygdx.game.actores.Personaje;
-import com.mygdx.game.input.Teclado;
 
 import javax.swing.Box;
 
 public class PrimerMundo implements Screen {
 
     private Juego juego;
-    private Teclado teclado;
-
-
     //variables Box2d
     private World world;
     private Box2DDebugRenderer box2DDebugRenderer;
@@ -102,10 +95,16 @@ public class PrimerMundo implements Screen {
         camara.position.x = p1.body.getPosition().x;
         renderer.setView(camara);
 
+
+
         renderer.render();
 
         box2DDebugRenderer.render(world,camara.combined);
         juego.batch.setProjectionMatrix(camara.combined);
+
+        juego.batch.begin();
+         p1.draw(juego.batch,0);
+        juego.batch.end();
 
     }
 
