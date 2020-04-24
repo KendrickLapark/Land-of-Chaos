@@ -42,6 +42,8 @@ public class PrimerMundo implements Screen {
     private OrthographicCamera camara; //Camara del juego
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
 
+    float elapsedTime;
+
 
     public PrimerMundo(Juego j){
         this.juego = j;
@@ -92,6 +94,8 @@ public class PrimerMundo implements Screen {
     @Override
     public void render(float delta) {
 
+        elapsedTime += Gdx.graphics.getDeltaTime();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -103,7 +107,7 @@ public class PrimerMundo implements Screen {
         camara.position.x = p1.body.getPosition().x;
         renderer.setView(camara);
 
-
+        //p1.updateFrame(elapsedTime);
 
         renderer.render();
 
@@ -111,6 +115,7 @@ public class PrimerMundo implements Screen {
         juego.batch.setProjectionMatrix(camara.combined);
 
         juego.batch.begin();
+         p1.actualizar(elapsedTime);
          p1.draw(juego.batch,0);
         juego.batch.end();
 
