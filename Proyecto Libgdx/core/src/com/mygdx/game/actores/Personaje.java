@@ -32,20 +32,19 @@ public class Personaje extends Actor {
     public Body body;
     private Sprite sprite;
     private Music salto, caida;
-    private Texture standr,standl, runr, runl, jumpr, fallr, jumpl, falll,andando;
+    private Texture standr,standl, runr, runl, jumpr, fallr, jumpl, falll,andando1,andando2;
 
     private Animation walkAnimation;
     private TextureRegion[]walkFrames;
     private TextureRegion[][]tmp;
     TextureRegion currentWalkFrame;
 
-    private Juego juego;
-
     public Personaje(World mundo){
 
         this.world = mundo;
 
-        andando = new Texture("personajes/animacion/wg.png");
+        andando1 = new Texture("personajes/animacion/wg.png");
+        andando2 = new Texture("personajes/animacion2/walkinggoku2.png");
 
         standr = new Texture("personajes/gstandr.png");
         standl = new Texture("personajes/gstandl.png");
@@ -130,7 +129,7 @@ public class Personaje extends Actor {
             ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
 
-            tmp = TextureRegion.split(andando,36,64);
+            tmp = TextureRegion.split(andando1,37,58);
 
             walkFrames = new TextureRegion[4];
 
@@ -153,7 +152,26 @@ public class Personaje extends Actor {
             dActual = Direccion.IZQUIERDA;
             ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
-            sprite = new Sprite(runl);
+
+            tmp = TextureRegion.split(andando2,37,58);
+
+            walkFrames = new TextureRegion[4];
+
+            int index2 = 0;
+
+            for(int i = 0; i<4;i++){
+                for(int j = 0; j<1;j++){
+                    walkFrames[index2++] = tmp[j][i];
+                }
+            }
+
+            walkAnimation = new Animation(0.09f,walkFrames);
+
+            currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
+
+            sprite = new Sprite(currentWalkFrame);
+
+            //sprite = new Sprite(runl);
         }else if(dActual == Direccion.DERECHA){
             sprite = new Sprite(standr);
         }else{
