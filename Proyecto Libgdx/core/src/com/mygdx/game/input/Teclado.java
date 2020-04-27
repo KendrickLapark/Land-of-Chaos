@@ -17,19 +17,35 @@ public class Teclado implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
 
-        switch (keycode){
-            case Input.Keys.A:
-                pj1.body.setLinearVelocity(-20,0);
+        Gdx.app.log("eventoDown","Input "+keycode);
+        switch (keycode) {
             case Input.Keys.D:
-                pj1.body.setLinearVelocity(20,0);
-
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(20000,0),pj1.getCuerpo().getWorldCenter(),true);
+                break;
+            case Input.Keys.A:
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(-80,0),pj1.getCuerpo().getWorldCenter(),true);
+                break;
+            case Input.Keys.W:
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(0,80),pj1.getCuerpo().getWorldCenter(),true);
+                break;
+            case Input.Keys.S:
+                pj1.getCuerpo().setLinearVelocity(0,0);
+                break;
+            case Input.Keys.E:
+                pj1.setKamehameha(true);
         }
-
         return true;
+
     }
 
     @Override
     public boolean keyUp(int keycode) {
+
+        switch(keycode){
+            case Input.Keys.E:
+                pj1.setKamehameha(false);
+                pj1.kamehamehaSound.stop();
+        }
 
         return false;
     }
