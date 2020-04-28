@@ -5,10 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.actores.Personaje;
+import com.mygdx.game.objetos.Onda;
 
 public class Teclado implements InputProcessor {
 
     public Personaje pj1;
+    public Onda onda;
 
     public Teclado(Personaje personaje){
         this.pj1 = personaje;
@@ -20,19 +22,31 @@ public class Teclado implements InputProcessor {
         Gdx.app.log("eventoDown","Input "+keycode);
         switch (keycode) {
             case Input.Keys.D:
-                pj1.getCuerpo().applyLinearImpulse(new Vector2(20000,0),pj1.getCuerpo().getWorldCenter(),true);
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(20,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.A:
-                pj1.getCuerpo().applyLinearImpulse(new Vector2(-80,0),pj1.getCuerpo().getWorldCenter(),true);
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(-20,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.W:
-                pj1.getCuerpo().applyLinearImpulse(new Vector2(0,80),pj1.getCuerpo().getWorldCenter(),true);
+                if(pj1.getCuerpo().getLinearVelocity().y==0){
+                    pj1.getCuerpo().applyLinearImpulse(new Vector2(0,20),pj1.getCuerpo().getWorldCenter(),true);
+                }
                 break;
             case Input.Keys.S:
-                pj1.getCuerpo().setLinearVelocity(0,0);
+                /*if(pj1.dActual == Personaje.Direccion.DERECHA){
+                    pj1.getCuerpo().setLinearVelocity(0,0);
+                    System.out.println("Direccion tras bajasr:"+pj1.dActual);
+                }else{
+                    pj1.getCuerpo().setLinearVelocity(0,0);
+                    System.out.println("Direccion tras bajasr:"+pj1.dActual);
+                }*/
+
                 break;
             case Input.Keys.E:
                 pj1.setKamehameha(true);
+            case Input.Keys.F:
+                pj1.setOnda(true);
+                onda = new Onda(pj1.world,pj1);
         }
         return true;
 
@@ -45,6 +59,8 @@ public class Teclado implements InputProcessor {
             case Input.Keys.E:
                 pj1.setKamehameha(false);
                 pj1.kamehamehaSound.stop();
+            case Input.Keys.F:
+                pj1.setOnda(false);
         }
 
         return false;

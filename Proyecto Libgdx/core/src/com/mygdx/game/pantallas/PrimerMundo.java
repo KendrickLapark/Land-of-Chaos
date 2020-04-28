@@ -54,11 +54,12 @@ public class PrimerMundo implements Screen {
         this.juego = j;
         camara = new OrthographicCamera();
         viewport = new FitViewport(300,180,camara);
-        world = new World(new Vector2(0,-98f),true);
+        world = new World(new Vector2(0,-9.8f),true);
         mapa = new TmxMapLoader().load("mapa/m1,5.tmx");
-        renderer = new OrthogonalTiledMapRenderer(mapa);
+        renderer = new OrthogonalTiledMapRenderer(mapa,Juego.unitScale);
         p1 = new Personaje(world);
         s1 = new Saibaman(world);
+
 
         musica = Gdx.audio.newMusic(Gdx.files.internal("sonido/musica/dbzInicio.mp3"));
         musica.play();
@@ -113,7 +114,7 @@ public class PrimerMundo implements Screen {
         p1.mandoTeclado();
 
         camara.update();
-        camara.position.x = p1.body.getPosition().x;
+        camara.position.x = p1.getCuerpo().getPosition().x;
         renderer.setView(camara);
 
         //p1.updateFrame(elapsedTime);
@@ -124,9 +125,9 @@ public class PrimerMundo implements Screen {
         juego.batch.setProjectionMatrix(camara.combined);
 
         juego.batch.begin();
-         p1.actualizar(elapsedTime);
+         p1.animacionAcciones(elapsedTime);
          p1.draw(juego.batch,0);
-         s1.actualizarSprite(elapsedTime);
+         s1.animacionAcciones(elapsedTime);
          s1.draw(juego.batch,0);
         juego.batch.end();
 

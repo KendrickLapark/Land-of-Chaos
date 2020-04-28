@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -25,10 +26,13 @@ public class Personaje extends Actor {
     public Estado eActual, ePrevio;
 
     public World world;
-    public Body body;
     private Sprite sprite;
     public Music salto, caida, kamehamehaSound;
-    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1,kamehamehaTexture;
+    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL;
+
+    private Body body;
+    private BodyDef bodyDef;
+    private FixtureDef fixtureDef;
 
     private Animation walkAnimation;
     private TextureRegion[]walkFrames;
@@ -37,7 +41,7 @@ public class Personaje extends Actor {
 
     private int indexk;
 
-    float animationTime;
+    private float animationTime;
 
     private Boolean rafagazo, bKamehameha;
 
@@ -48,7 +52,8 @@ public class Personaje extends Actor {
 
         andando1 = new Texture("personajes/Goku/animacion/wg.png");
         andando2 = new Texture("personajes/Goku/animacion2/walkinggoku2.png");
-        kamehamehaTexture = new Texture("personajes/Goku/kamehameha/deuna.png");
+        kamehamehaTexture = new Texture("personajes/Goku/kamehameha/kamehamehaR.png");
+        kamehamehaTextureL = new Texture("personajes/Goku/kamehameha/kamehamehaL.png");
 
         standr = new Texture("personajes/Goku/gstandr.png");
         standl = new Texture("personajes/Goku/gstandl.png");
@@ -57,6 +62,7 @@ public class Personaje extends Actor {
         fallr = new Texture("personajes/Goku/gfallr.png");
         falll = new Texture("personajes/Goku/gfalll.png");
         rafaga1 = new Texture("personajes/Goku/gokurafaga.png");
+        rafaga2 = new Texture("personajes/Goku/gokurafagaL.png");
 
         salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
         caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
@@ -93,22 +99,22 @@ public class Personaje extends Actor {
     }*/
 
 
+
     public void propiedadesFisicas(){
 
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(2032,22);
+        bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(2032,22);
         body = world.createBody(bodyDef);
 
-        FixtureDef fixtureDef = new FixtureDef();
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(5);
-        fixtureDef.shape = circleShape;
+        fixtureDef = new FixtureDef();
+        fixtureDef.shape = new PolygonShape();
+        ((PolygonShape)fixtureDef.shape).setAsBox(4, 4);
         body.createFixture(fixtureDef);
 
     }
 
-    public void actualizar(float elapsedTime){
+    public void animacionAcciones(float elapsedTime){
 
         indexk=0;
 
@@ -153,7 +159,7 @@ public class Personaje extends Actor {
                 }
             }
 
-            walkAnimation = new Animation(0.09f,walkFrames);
+            walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames);             // a mas número la animacion va mas lento , a 1 va muy lento a 0.001 muy rapido()
 
             currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
 
@@ -176,7 +182,7 @@ public class Personaje extends Actor {
                 }
             }
 
-            walkAnimation = new Animation(0.09f,walkFrames);
+            walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames);
 
             currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
 
@@ -195,9 +201,6 @@ public class Personaje extends Actor {
             caida.setVolume(0.02f);
         }
 
-        if(rafagazo==true){
-            sprite = new Sprite(rafaga1);
-        }
 
         if(bKamehameha==true && dActual==Direccion.DERECHA){
 
@@ -226,9 +229,46 @@ public class Personaje extends Actor {
 
             body.setLinearVelocity(0,0);
 
-        }else{
-            animationTime = 0;
+        }else if(bKamehameha==true && dActual==Direccion.IZQUIERDA){
+            animationTime+=0.03f;
+
+            tmp = TextureRegion.split(kamehamehaTextureL,45,44);
+
+            walkFrames = new TextureRegion[10];
+
+            indexk = 0;
+
+            for(int i = 0; i<10;i++){
+                for(int j = 0; j<1;j++){
+                    walkFrames[indexk++] = tmp[j][i];
+                }
+            }
+
+            walkAnimation = new Animation(0.2f,walkFrames);
+
+            currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((animationTime),false);
+
+            sprite = new Sprite(currentWalkFrame);
+
+            kamehamehaSound.play();
+            kamehamehaSound.setVolume(0.03f);
+
+            body.setLinearVelocity(0,0);
+        }else if(bKamehameha==false){
+            animationTime=0;
         }
+
+
+        if(rafagazo && dActual == Direccion.DERECHA && bKamehameha==false){
+            sprite = new Sprite(rafaga1);
+            body.setLinearVelocity(0,body.getLinearVelocity().y);
+        }else if(rafagazo && dActual == Direccion.IZQUIERDA && bKamehameha==false){
+            sprite = new Sprite(rafaga2);
+            body.setLinearVelocity(0,body.getLinearVelocity().y);
+        }
+
+
+
 
        // System.out.println("Goku x :" + body.getPosition().x+"velocidad:"+body.getLinearVelocity()+"Goku y: "+body.getPosition().y);
     }
@@ -274,6 +314,10 @@ public class Personaje extends Actor {
 
     public void setKamehameha(Boolean b){
         bKamehameha = b;
+    }
+
+    public void setOnda(Boolean e){
+        rafagazo = e;
     }
 
 }

@@ -105,7 +105,7 @@ public class Saibaman extends Actor {
 
     }
 
-    public void actualizarSprite(float elapsedTime){
+    public void animacionAcciones(float elapsedTime){
 
         if(ida == true){
 

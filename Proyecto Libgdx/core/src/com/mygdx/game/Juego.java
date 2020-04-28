@@ -11,6 +11,7 @@ import com.mygdx.game.pantallas.PrimerMundo;
 
 public class Juego extends Game {
 
+	public static final float unitScale = 1/16f;
 
 	public SpriteBatch batch;
 	Screen pantallaActual;
