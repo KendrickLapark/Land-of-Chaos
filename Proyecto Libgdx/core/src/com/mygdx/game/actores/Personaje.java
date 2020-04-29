@@ -14,9 +14,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.mygdx.game.objetos.Onda;
 
 public class Personaje extends Actor {
 
@@ -39,11 +39,13 @@ public class Personaje extends Actor {
     private TextureRegion[][]tmp;
     TextureRegion currentWalkFrame;
 
-    private int indexk;
+    public int indexk, pulsaciones;
 
     private float animationTime;
 
     private Boolean rafagazo, bKamehameha;
+
+    private Onda onda;
 
 
     public Personaje(World mundo){
@@ -88,6 +90,9 @@ public class Personaje extends Actor {
         sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 6);
         sprite.draw(batch);*/
         //sprite = new Sprite(currentWalkFrame);
+        if(onda!=null){
+            onda.draw(batch, parentAlpha);
+        }
         sprite.setBounds(body.getPosition().x,body.getPosition().y,16,16);
         sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 6);
         sprite.draw(batch);
@@ -108,9 +113,10 @@ public class Personaje extends Actor {
         body = world.createBody(bodyDef);
 
         fixtureDef = new FixtureDef();
-        fixtureDef.shape = new PolygonShape();
-        ((PolygonShape)fixtureDef.shape).setAsBox(4, 4);
+        fixtureDef.shape = new CircleShape();
+        fixtureDef.shape.setRadius(5f);
         body.createFixture(fixtureDef);
+        fixtureDef.shape.dispose();
 
     }
 
@@ -260,10 +266,23 @@ public class Personaje extends Actor {
 
 
         if(rafagazo && dActual == Direccion.DERECHA && bKamehameha==false){
+
+
             sprite = new Sprite(rafaga1);
+            if(pulsaciones==1){
+                onda = new Onda(world,this);
+            }
+
+            pulsaciones = 0;
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }else if(rafagazo && dActual == Direccion.IZQUIERDA && bKamehameha==false){
             sprite = new Sprite(rafaga2);
+            if(pulsaciones==1){
+                onda = new Onda(world,this);
+            }
+
+            pulsaciones=0;
+
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
 

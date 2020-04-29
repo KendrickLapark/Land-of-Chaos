@@ -54,9 +54,9 @@ public class PrimerMundo implements Screen {
         this.juego = j;
         camara = new OrthographicCamera();
         viewport = new FitViewport(300,180,camara);
-        world = new World(new Vector2(0,-9.8f),true);
+        world = new World(new Vector2(0,-98f),true);
         mapa = new TmxMapLoader().load("mapa/m1,5.tmx");
-        renderer = new OrthogonalTiledMapRenderer(mapa,Juego.unitScale);
+        renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
         s1 = new Saibaman(world);
 

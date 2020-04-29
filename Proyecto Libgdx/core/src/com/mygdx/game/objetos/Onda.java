@@ -1,5 +1,7 @@
 package com.mygdx.game.objetos;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -26,13 +28,28 @@ public class Onda extends Actor {
 
         fisica();
 
-        body.setLinearVelocity(30,20);
+        if(pj1.dActual == Personaje.Direccion.DERECHA){
+            body.setLinearVelocity(90,0);
+            sprite = new Sprite(new Texture("Objetos/ondaR.png"));
+        }else{
+            body.setLinearVelocity(-90,0);
+            sprite = new Sprite(new Texture("Objetos/ondaL.png"));
+        }
+
+
+
+
 
     }
 
     public void fisica(){
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(pj1.getCuerpo().getPosition().x+1,pj1.getCuerpo().getPosition().y);
+        if(pj1.dActual == Personaje.Direccion.DERECHA){
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x+1,pj1.getCuerpo().getPosition().y);
+        }else{
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x-1,pj1.getCuerpo().getPosition().y);
+        }
+
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bodyDef);
 
@@ -40,6 +57,16 @@ public class Onda extends Actor {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(1);
         fixtureDef.shape = circleShape;
+        fixtureDef.density=1f;
         body.createFixture(fixtureDef);
+        body.setGravityScale(0.0f);
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+
+        sprite.setOrigin(body.getPosition().x,body.getPosition().y);
+        sprite.setBounds(body.getPosition().x-3,body.getPosition().y-2,6,4);
+        sprite.draw(batch);
     }
 }

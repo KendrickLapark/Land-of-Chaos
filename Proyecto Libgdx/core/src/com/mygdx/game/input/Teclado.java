@@ -22,31 +22,32 @@ public class Teclado implements InputProcessor {
         Gdx.app.log("eventoDown","Input "+keycode);
         switch (keycode) {
             case Input.Keys.D:
-                pj1.getCuerpo().applyLinearImpulse(new Vector2(20,0),pj1.getCuerpo().getWorldCenter(),true);
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(80,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.A:
-                pj1.getCuerpo().applyLinearImpulse(new Vector2(-20,0),pj1.getCuerpo().getWorldCenter(),true);
+                pj1.getCuerpo().applyLinearImpulse(new Vector2(-80,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.W:
                 if(pj1.getCuerpo().getLinearVelocity().y==0){
-                    pj1.getCuerpo().applyLinearImpulse(new Vector2(0,20),pj1.getCuerpo().getWorldCenter(),true);
+                    pj1.getCuerpo().applyLinearImpulse(new Vector2(0,180),pj1.getCuerpo().getWorldCenter(),true);
                 }
                 break;
             case Input.Keys.S:
-                /*if(pj1.dActual == Personaje.Direccion.DERECHA){
+                if(pj1.dActual == Personaje.Direccion.DERECHA){
                     pj1.getCuerpo().setLinearVelocity(0,0);
                     System.out.println("Direccion tras bajasr:"+pj1.dActual);
+
                 }else{
                     pj1.getCuerpo().setLinearVelocity(0,0);
                     System.out.println("Direccion tras bajasr:"+pj1.dActual);
-                }*/
+                }
 
                 break;
             case Input.Keys.E:
                 pj1.setKamehameha(true);
             case Input.Keys.F:
                 pj1.setOnda(true);
-                onda = new Onda(pj1.world,pj1);
+                pj1.pulsaciones=1;
         }
         return true;
 
