@@ -1,8 +1,10 @@
 package com.mygdx.game.objetos;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.actores.Personaje;
+import com.mygdx.game.actores.Saibaman;
 
 public class Onda extends Actor {
 
@@ -17,6 +20,8 @@ public class Onda extends Actor {
     private World world;
 
     private Personaje pj1;
+
+    private boolean colision;
 
     private Body body;
 
@@ -35,10 +40,6 @@ public class Onda extends Actor {
             body.setLinearVelocity(-90,0);
             sprite = new Sprite(new Texture("Objetos/ondaL.png"));
         }
-
-
-
-
 
     }
 
@@ -68,5 +69,20 @@ public class Onda extends Actor {
         sprite.setOrigin(body.getPosition().x,body.getPosition().y);
         sprite.setBounds(body.getPosition().x-3,body.getPosition().y-2,6,4);
         sprite.draw(batch);
+    }
+
+    public boolean colisionSaibaman(Saibaman c){
+        boolean overlaps=getHitBox().overlaps(c.getHitBox());
+        if(overlaps&&colision==false){
+            colision=true;
+            Gdx.app.log("Colisionando","con "+c.getClass().getName());
+        }else if(!overlaps){
+            colision=false;
+        }
+        return colision;
+    }
+
+    public Rectangle getHitBox(){
+        return sprite.getBoundingRectangle();
     }
 }

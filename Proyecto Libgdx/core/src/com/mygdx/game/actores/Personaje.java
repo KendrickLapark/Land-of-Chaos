@@ -339,6 +339,8 @@ public class Personaje extends Actor {
         rafagazo = e;
     }
 
+
+
 }
 
 
