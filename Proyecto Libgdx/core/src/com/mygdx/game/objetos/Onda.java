@@ -23,7 +23,9 @@ public class Onda extends Actor {
 
     private boolean colision;
 
-    private Body body;
+    public Body body;
+
+    public float velocidadOriginal;
 
 
     public Onda(World m, Personaje p1){
@@ -31,24 +33,34 @@ public class Onda extends Actor {
         this.world = m;
         this.pj1 = p1;
 
+
         fisica();
 
-        if(pj1.dActual == Personaje.Direccion.DERECHA){
-            body.setLinearVelocity(90,0);
+        if (pj1.dActual == Personaje.Direccion.DERECHA) {
+            body.setLinearVelocity(90, 0);
             sprite = new Sprite(new Texture("Objetos/ondaR.png"));
-        }else{
-            body.setLinearVelocity(-90,0);
+        } else {
+            body.setLinearVelocity(-90, 0);
             sprite = new Sprite(new Texture("Objetos/ondaL.png"));
         }
+
+        velocidadOriginal = body.getLinearVelocity().x;
+
+        if (this.body.getLinearVelocity().x != velocidadOriginal) {
+            this.body.setActive(false);
+        }
+
+
+        System.out.println("La velocidad original de la onda es: "+velocidadOriginal);
 
     }
 
     public void fisica(){
         BodyDef bodyDef = new BodyDef();
         if(pj1.dActual == Personaje.Direccion.DERECHA){
-            bodyDef.position.set(pj1.getCuerpo().getPosition().x+1,pj1.getCuerpo().getPosition().y);
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x+5,pj1.getCuerpo().getPosition().y+2);
         }else{
-            bodyDef.position.set(pj1.getCuerpo().getPosition().x-1,pj1.getCuerpo().getPosition().y);
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x-5,pj1.getCuerpo().getPosition().y+2);
         }
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -71,6 +83,7 @@ public class Onda extends Actor {
         sprite.draw(batch);
     }
 
+
     public boolean colisionSaibaman(Saibaman c){
         boolean overlaps=getHitBox().overlaps(c.getHitBox());
         if(overlaps&&colision==false){
@@ -82,7 +95,26 @@ public class Onda extends Actor {
         return colision;
     }
 
+    public boolean colisionOnda(Onda o){
+        boolean overlaps=getHitBox().overlaps(o.getHitBox());
+        if(overlaps&&colision==false){
+            colision=true;
+            Gdx.app.log("Colisionando","con "+o.getClass().getName());
+        }else if(!overlaps){
+            colision=false;
+        }
+        return colision;
+    }
+
+
+
     public Rectangle getHitBox(){
         return sprite.getBoundingRectangle();
     }
+
+    public Body getCuerpo(){
+        return body;
+    }
+
+
 }

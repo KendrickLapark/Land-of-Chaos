@@ -19,9 +19,9 @@ import java.awt.geom.RectangularShape;
 public class Saibaman extends Actor {
 
     private World world;
-    private Body body;
+    public Body body;
     private Sprite sprite;
-    private Texture staticSaibaman, animacionWalking1,animacionWalking2;
+    private Texture staticSaibaman, animacionWalking1,animacionWalking2,animacionFalling1,animacionFalling2;
 
     private Animation walkAnimation;
     private TextureRegion[]walkFrames;
@@ -29,6 +29,8 @@ public class Saibaman extends Actor {
     TextureRegion currentWalkFrame;
 
     private boolean ida;
+
+    public int vidas;
 
     private float posInicialX;
 
@@ -38,12 +40,14 @@ public class Saibaman extends Actor {
         staticSaibaman = new Texture("personajes/Saibaman/sai.png");
         animacionWalking1 = new Texture("personajes/Saibaman/saibamanwalking1.png");
         animacionWalking2 = new Texture("personajes/Saibaman/saibamanwalking2.png");
+        animacionFalling1 = new Texture("personajes/Saibaman/saibamanfallingR.png");
+        animacionFalling2 = new Texture("personajes/Saibaman/saibamanfallingL.png");
 
         propiedadesFisicas();
 
         ida = true;
 
-
+        vidas = 3;
 
         posInicialX = body.getPosition().x;
 
@@ -68,11 +72,19 @@ public class Saibaman extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         //sprite = new Sprite(staticSaibaman);
-        sprite.setBounds(body.getPosition().x-7,body.getPosition().y-7,16,16);
-        sprite.setPosition(body.getPosition().x - 9f, body.getPosition().y - 9);
-        sprite.draw(batch);
-        patrullar();
-        System.out.println(body.getPosition().x);
+
+        if(vidas == 0){
+            sprite.setBounds(body.getPosition().x-7,body.getPosition().y-12,16,16);
+            sprite.draw(batch);
+
+        }else{
+            sprite.setBounds(body.getPosition().x-7,body.getPosition().y-7,16,16);
+            sprite.setPosition(body.getPosition().x - 9f, body.getPosition().y - 9);
+            sprite.draw(batch);
+            patrullar();
+        }
+
+
     }
 
     public void patrullar() {
@@ -150,6 +162,56 @@ public class Saibaman extends Actor {
             sprite = new Sprite(currentWalkFrame);
 
         }
+
+        if(vidas == 0 && ida == true){
+
+            tmp = TextureRegion.split(animacionFalling1,43,58);
+
+            walkFrames = new TextureRegion[2];
+
+            int index = 0;
+
+            for(int i = 0; i<2;i++){
+                for(int j = 0; j<1;j++){
+                    walkFrames[index++] = tmp[j][i];
+                }
+            }
+
+            walkAnimation = new Animation(0.00009f,walkFrames);
+
+            currentWalkFrame = (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),false);
+
+            sprite = new Sprite(currentWalkFrame);
+
+            body.setLinearVelocity(0,0);
+
+        }
+
+        if(vidas == 0 && ida == false){
+
+            tmp = TextureRegion.split(animacionFalling2,32,58);
+
+            walkFrames = new TextureRegion[3];
+
+            int index = 0;
+
+            for(int i = 3; i>0;i--){
+                for(int j = 0; j<1;j++){
+                    walkFrames[index++] = tmp[j][i];
+                }
+            }
+
+            walkAnimation = new Animation(0.2f,walkFrames);
+
+            currentWalkFrame = (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),false);
+
+            sprite = new Sprite(currentWalkFrame);
+
+            body.setLinearVelocity(0,0);
+
+        }
+
+
     }
 
     public Rectangle getHitBox(){

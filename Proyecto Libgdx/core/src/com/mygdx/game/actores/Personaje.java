@@ -1,15 +1,12 @@
 package com.mygdx.game.actores;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -17,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.objetos.Onda;
+
+import java.util.ArrayList;
 
 public class Personaje extends Actor {
 
@@ -39,13 +38,15 @@ public class Personaje extends Actor {
     private TextureRegion[][]tmp;
     TextureRegion currentWalkFrame;
 
+    public ArrayList <Onda> listaOndas;
+
     public int indexk, pulsaciones;
 
     private float animationTime;
 
     private Boolean rafagazo, bKamehameha;
 
-    private Onda onda;
+    public Onda onda;
 
 
     public Personaje(World mundo){
@@ -71,6 +72,7 @@ public class Personaje extends Actor {
         kamehamehaSound = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/kamehameha.mp3"));
 
         currentWalkFrame = new TextureRegion(standr);
+        listaOndas = new ArrayList<>();
 
         eActual = Estado.ENLASUPERFICIE;
         dActual = Direccion.DERECHA;
@@ -90,8 +92,10 @@ public class Personaje extends Actor {
         sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 6);
         sprite.draw(batch);*/
         //sprite = new Sprite(currentWalkFrame);
-        if(onda!=null){
-            onda.draw(batch, parentAlpha);
+
+
+        for (Onda onda : listaOndas){
+            onda.draw(batch,parentAlpha);
         }
         sprite.setBounds(body.getPosition().x,body.getPosition().y,16,16);
         sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 6);
@@ -102,8 +106,6 @@ public class Personaje extends Actor {
    /* public void updateFrame(float elapsedTime){
         currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
     }*/
-
-
 
     public void propiedadesFisicas(){
 
@@ -207,7 +209,6 @@ public class Personaje extends Actor {
             caida.setVolume(0.02f);
         }
 
-
         if(bKamehameha==true && dActual==Direccion.DERECHA){
 
             animationTime+=0.03f;
@@ -264,32 +265,18 @@ public class Personaje extends Actor {
             animationTime=0;
         }
 
-
         if(rafagazo && dActual == Direccion.DERECHA && bKamehameha==false){
 
-
             sprite = new Sprite(rafaga1);
-            if(pulsaciones==1){
-                onda = new Onda(world,this);
-            }
 
-            pulsaciones = 0;
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }else if(rafagazo && dActual == Direccion.IZQUIERDA && bKamehameha==false){
             sprite = new Sprite(rafaga2);
-            if(pulsaciones==1){
-                onda = new Onda(world,this);
-            }
-
-            pulsaciones=0;
-
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
 
 
 
-
-       // System.out.println("Goku x :" + body.getPosition().x+"velocidad:"+body.getLinearVelocity()+"Goku y: "+body.getPosition().y);
     }
 
     public Body getCuerpo(){
@@ -338,8 +325,6 @@ public class Personaje extends Actor {
     public void setOnda(Boolean e){
         rafagazo = e;
     }
-
-
 
 }
 

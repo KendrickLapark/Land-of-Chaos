@@ -45,9 +45,6 @@ public class Teclado implements InputProcessor {
                 break;
             case Input.Keys.E:
                 pj1.setKamehameha(true);
-            case Input.Keys.F:
-                pj1.setOnda(true);
-                pj1.pulsaciones=1;
         }
         return true;
 
@@ -60,8 +57,6 @@ public class Teclado implements InputProcessor {
             case Input.Keys.E:
                 pj1.setKamehameha(false);
                 pj1.kamehamehaSound.stop();
-            case Input.Keys.F:
-                pj1.setOnda(false);
         }
 
         return false;

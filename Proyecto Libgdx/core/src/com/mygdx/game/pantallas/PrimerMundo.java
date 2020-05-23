@@ -1,6 +1,7 @@
 package com.mygdx.game.pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,15 +16,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 import com.mygdx.game.actores.Personaje;
 import com.mygdx.game.actores.Saibaman;
 import com.mygdx.game.input.Teclado;
+import com.mygdx.game.objetos.Onda;
+
+import java.util.Iterator;
 
 import javax.swing.Box;
 
@@ -38,12 +47,15 @@ public class PrimerMundo implements Screen {
 
     private Personaje p1;
     private Saibaman s1;
+    private Onda onda;
 
     private Music musica;
 
     private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
     private OrthogonalTiledMapRenderer renderer; //Renderer del mapa
+
+    private Array<Onda> ondas, ondasToDestroy;
 
     float elapsedTime;
 
@@ -59,6 +71,8 @@ public class PrimerMundo implements Screen {
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
         s1 = new Saibaman(world);
+        ondas = new Array<>();
+        ondasToDestroy = new Array<>();
 
 
         musica = Gdx.audio.newMusic(Gdx.files.internal("sonido/musica/dbzInicio.mp3"));
@@ -93,6 +107,62 @@ public class PrimerMundo implements Screen {
 
         teclado = new Teclado(p1);
         Gdx.input.setInputProcessor(teclado);
+
+        world.setContactListener(new ContactListener() {
+
+            @Override
+            public void beginContact(Contact contact) {
+
+                for(int i = 0; i<ondas.size;i++){
+
+                    if(i >= 1 &&  contact.getFixtureA().getBody()==ondas.get(i-1).getCuerpo()&&
+                            contact.getFixtureB().getBody()==ondas.get(i).getCuerpo()){
+                        System.out.println("SE HA BORRADO");
+                        ondasToDestroy.add(ondas.get(i));
+                        ondasToDestroy.add(ondas.get(i-1));
+                        ondas.removeIndex(i);
+                        ondas.removeIndex(i-1);
+                    }
+
+                    if(contact.getFixtureA().getBody() == s1.body && contact.getFixtureB().getBody() == ondas.get(i).getCuerpo()){
+                        System.out.println("Impacto");
+                        ondasToDestroy.add(ondas.get(i));
+                        ondas.removeIndex(i);
+                        s1.vidas--;
+                    }
+
+                }
+
+                Gdx.app.postRunnable(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(Onda onda : ondasToDestroy){
+                            onda.body.setActive(false);
+                        }
+                    }
+                });
+
+                if(s1.vidas==0){
+                    System.out.println("Buenaaarrddo");
+                }
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+
+            }
+        });
     }
 
 
@@ -127,10 +197,18 @@ public class PrimerMundo implements Screen {
         juego.batch.begin();
          p1.animacionAcciones(elapsedTime);
          p1.draw(juego.batch,0);
+
          s1.animacionAcciones(elapsedTime);
          s1.draw(juego.batch,0);
-        juego.batch.end();
 
+         for (Onda onda : ondas){
+
+                 onda.draw(juego.batch,0);
+         }
+
+         acciones();
+
+        juego.batch.end();
     }
 
     @Override
@@ -159,7 +237,21 @@ public class PrimerMundo implements Screen {
 
         renderer.dispose();
         world.dispose();
+        musica.dispose();
 
+    }
+
+
+    public void acciones(){
+        if(Gdx.input.isKeyPressed(Input.Keys.F)){
+            p1.setOnda(true);
+        }else{
+            p1.setOnda(false);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
+            ondas.add(new Onda(world,p1));
+        }
     }
 
 
