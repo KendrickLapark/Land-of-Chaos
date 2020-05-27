@@ -40,7 +40,7 @@ public class Saibaman extends Actor {
         staticSaibaman = new Texture("personajes/Saibaman/sai.png");
         animacionWalking1 = new Texture("personajes/Saibaman/saibamanwalking1.png");
         animacionWalking2 = new Texture("personajes/Saibaman/saibamanwalking2.png");
-        animacionFalling1 = new Texture("personajes/Saibaman/saibamanfallingR.png");
+        animacionFalling1 = new Texture("personajes/Saibaman/saibamanfallingR2.png");
         animacionFalling2 = new Texture("personajes/Saibaman/saibamanfallingL.png");
 
         propiedadesFisicas();
@@ -165,13 +165,13 @@ public class Saibaman extends Actor {
 
         if(vidas == 0 && ida == true){
 
-            tmp = TextureRegion.split(animacionFalling1,43,58);
+            tmp = TextureRegion.split(animacionFalling1,48,58);
 
-            walkFrames = new TextureRegion[2];
+            walkFrames = new TextureRegion[4];
 
             int index = 0;
 
-            for(int i = 0; i<2;i++){
+            for(int i = 0; i<4;i++){
                 for(int j = 0; j<1;j++){
                     walkFrames[index++] = tmp[j][i];
                 }
@@ -189,19 +189,19 @@ public class Saibaman extends Actor {
 
         if(vidas == 0 && ida == false){
 
-            tmp = TextureRegion.split(animacionFalling2,32,58);
+            tmp = TextureRegion.split(animacionFalling2,56,62);
 
-            walkFrames = new TextureRegion[3];
+            walkFrames = new TextureRegion[4];
 
             int index = 0;
 
-            for(int i = 3; i>0;i--){
+            for(int i = 3; i>=0;i--){
                 for(int j = 0; j<1;j++){
                     walkFrames[index++] = tmp[j][i];
                 }
             }
 
-            walkAnimation = new Animation(0.2f,walkFrames);
+            walkAnimation = new Animation(0.02f,walkFrames);
 
             currentWalkFrame = (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),false);
 
@@ -210,7 +210,6 @@ public class Saibaman extends Actor {
             body.setLinearVelocity(0,0);
 
         }
-
 
     }
 

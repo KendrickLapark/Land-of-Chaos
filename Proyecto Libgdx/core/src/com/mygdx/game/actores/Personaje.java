@@ -27,7 +27,7 @@ public class Personaje extends Actor {
     public World world;
     private Sprite sprite;
     public Music salto, caida, kamehamehaSound;
-    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL;
+    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL, lanzaR, lanzaL;
 
     private Body body;
     private BodyDef bodyDef;
@@ -40,18 +40,21 @@ public class Personaje extends Actor {
 
     public ArrayList <Onda> listaOndas;
 
-    public int indexk, pulsaciones;
+    public int indexk;
 
-    private float animationTime;
+    private float animationTime,animationTime2;
 
     private Boolean rafagazo, bKamehameha;
 
-    public Onda onda;
+
+    public int activador;
 
 
     public Personaje(World mundo){
 
         this.world = mundo;
+
+        activador = 0;
 
         andando1 = new Texture("personajes/Goku/animacion/wg.png");
         andando2 = new Texture("personajes/Goku/animacion2/walkinggoku2.png");
@@ -66,6 +69,9 @@ public class Personaje extends Actor {
         falll = new Texture("personajes/Goku/gfalll.png");
         rafaga1 = new Texture("personajes/Goku/gokurafaga.png");
         rafaga2 = new Texture("personajes/Goku/gokurafagaL.png");
+
+        lanzaR = new Texture("personajes/Goku/kamehameha/lanzandoR.png");
+        lanzaL = new Texture("personajes/Goku/kamehameha/lanzandoL.png");
 
         salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
         caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
@@ -275,6 +281,9 @@ public class Personaje extends Actor {
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
 
+        if(activador==1){
+            
+        }
 
 
     }

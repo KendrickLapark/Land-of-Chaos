@@ -30,6 +30,7 @@ import com.mygdx.game.Juego;
 import com.mygdx.game.actores.Personaje;
 import com.mygdx.game.actores.Saibaman;
 import com.mygdx.game.input.Teclado;
+import com.mygdx.game.objetos.Capsula;
 import com.mygdx.game.objetos.Onda;
 
 import java.util.Iterator;
@@ -48,8 +49,9 @@ public class PrimerMundo implements Screen {
     private Personaje p1;
     private Saibaman s1;
     private Onda onda;
+    private Capsula c1;
 
-    private Music musica;
+    private Music musica, saibamanDead;
 
     private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
@@ -71,6 +73,9 @@ public class PrimerMundo implements Screen {
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
         s1 = new Saibaman(world);
+        c1 = new Capsula(world,"Objetos/capsule.png",2500,103);
+
+        saibamanDead = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/saibamandead.mp3"));
         ondas = new Array<>();
         ondasToDestroy = new Array<>();
 
@@ -139,12 +144,16 @@ public class PrimerMundo implements Screen {
                         for(Onda onda : ondasToDestroy){
                             onda.body.setActive(false);
                         }
+
+                        if(s1.vidas==0){
+                            s1.body.setActive(false);
+                            saibamanDead.play();
+                            saibamanDead.setVolume(0.03f);
+                        }
                     }
                 });
 
-                if(s1.vidas==0){
-                    System.out.println("Buenaaarrddo");
-                }
+
 
             }
 
@@ -201,10 +210,14 @@ public class PrimerMundo implements Screen {
          s1.animacionAcciones(elapsedTime);
          s1.draw(juego.batch,0);
 
+         c1.draw(juego.batch,0);
+
          for (Onda onda : ondas){
 
                  onda.draw(juego.batch,0);
          }
+
+        System.out.println("Posicion del player x:"+p1.getCuerpo().getPosition().x+"Posicion y:"+p1.getCuerpo().getPosition().y);
 
          acciones();
 
@@ -238,6 +251,7 @@ public class PrimerMundo implements Screen {
         renderer.dispose();
         world.dispose();
         musica.dispose();
+        saibamanDead.dispose();
 
     }
 
