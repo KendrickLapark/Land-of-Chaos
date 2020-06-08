@@ -75,6 +75,8 @@ public class PrimerMundo implements Screen {
         s1 = new Saibaman(world);
         c1 = new Capsula(world,"Objetos/capsule.png",2500,103);
 
+        TextoInterface.SetSpriteBatch(juego.batch);
+
         saibamanDead = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/saibamandead.mp3"));
         ondas = new Array<>();
         ondasToDestroy = new Array<>();
@@ -190,6 +192,8 @@ public class PrimerMundo implements Screen {
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
+
+
         p1.mandoTeclado();
 
         camara.update();
@@ -204,6 +208,7 @@ public class PrimerMundo implements Screen {
         juego.batch.setProjectionMatrix(camara.combined);
 
         juego.batch.begin();
+        TextoInterface.draw("Hits: "+s1.vidas,camara);
          p1.animacionAcciones(elapsedTime);
          p1.draw(juego.batch,0);
 
