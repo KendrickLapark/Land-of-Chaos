@@ -117,7 +117,7 @@ public class Personaje extends Actor {
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(2032,22);
+        bodyDef.position.set(32,22);
         body = world.createBody(bodyDef);
 
         fixtureDef = new FixtureDef();

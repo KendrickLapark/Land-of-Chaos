@@ -34,7 +34,7 @@ public class Saibaman extends Actor {
 
     private float posInicialX;
 
-    public Saibaman(World mundo){
+    public Saibaman(World mundo, float x, float y){
         this.world = mundo;
 
         staticSaibaman = new Texture("personajes/Saibaman/sai.png");
@@ -43,7 +43,7 @@ public class Saibaman extends Actor {
         animacionFalling1 = new Texture("personajes/Saibaman/saibamanfallingR2.png");
         animacionFalling2 = new Texture("personajes/Saibaman/saibamanfallingL.png");
 
-        propiedadesFisicas();
+        propiedadesFisicas(x, y);
 
         ida = true;
 
@@ -54,10 +54,10 @@ public class Saibaman extends Actor {
 
     }
 
-    public void propiedadesFisicas(){
+    public void propiedadesFisicas(float x, float y){
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(2090,69);
+        bodyDef.position.set(x,y); //x=2090 y=69, zona inicial
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bodyDef);
 
@@ -81,7 +81,7 @@ public class Saibaman extends Actor {
             sprite.setBounds(body.getPosition().x-7,body.getPosition().y-7,16,16);
             sprite.setPosition(body.getPosition().x - 9f, body.getPosition().y - 9);
             sprite.draw(batch);
-            patrullar();
+            //patrullar();
         }
 
 

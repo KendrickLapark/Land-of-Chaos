@@ -51,7 +51,7 @@ public class PrimerMundo implements Screen {
     private Onda onda;
     private Capsula c1;
 
-    private Music musica, saibamanDead;
+    private Music musica;
 
     private Viewport viewport;
     private OrthographicCamera camara; //Camara del juego
@@ -72,12 +72,11 @@ public class PrimerMundo implements Screen {
         mapa = new TmxMapLoader().load("mapa/m1,5.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
-        s1 = new Saibaman(world);
+        s1 = new Saibaman(world, 82, 22);
         c1 = new Capsula(world,"Objetos/capsule.png",2500,103);
 
         TextoInterface.SetSpriteBatch(juego.batch);
 
-        saibamanDead = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/saibamandead.mp3"));
         ondas = new Array<>();
         ondasToDestroy = new Array<>();
 
@@ -149,8 +148,6 @@ public class PrimerMundo implements Screen {
 
                         if(s1.vidas==0){
                             s1.body.setActive(false);
-                            saibamanDead.play();
-                            saibamanDead.setVolume(0.03f);
                         }
                     }
                 });
@@ -208,7 +205,7 @@ public class PrimerMundo implements Screen {
         juego.batch.setProjectionMatrix(camara.combined);
 
         juego.batch.begin();
-        TextoInterface.draw("Hits: "+s1.vidas,camara);
+        TextoInterface.draw(camara);
          p1.animacionAcciones(elapsedTime);
          p1.draw(juego.batch,0);
 
@@ -256,7 +253,6 @@ public class PrimerMundo implements Screen {
         renderer.dispose();
         world.dispose();
         musica.dispose();
-        saibamanDead.dispose();
 
     }
 
