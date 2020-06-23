@@ -20,7 +20,8 @@ import java.util.ArrayList;
 public class Personaje extends Actor {
 
     public enum Direccion  { IZQUIERDA, DERECHA}
-    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE}
+    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA}
+    public enum Situacion{ AIRE, SUELO }
     public Direccion dActual, dPrevio;
     public Estado eActual, ePrevio;
 
@@ -29,7 +30,7 @@ public class Personaje extends Actor {
     public Music salto, caida, kamehamehaSound;
     private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL, lanzaR, lanzaL;
 
-    private Body body;
+    public Body body;
     private BodyDef bodyDef;
     private FixtureDef fixtureDef;
 
@@ -208,7 +209,7 @@ public class Personaje extends Actor {
             sprite = new Sprite(standl);
         }
 
-        if(ePrevio == Estado.CALLENDO && body.getLinearVelocity().y == 0 && body.getPosition().y<21){
+        if(ePrevio == Estado.CALLENDO && body.getLinearVelocity().y == 0 ){
             ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
             caida.play();
@@ -281,11 +282,6 @@ public class Personaje extends Actor {
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
 
-        if(activador==1){
-            
-        }
-
-
     }
 
     public Body getCuerpo(){
@@ -334,6 +330,8 @@ public class Personaje extends Actor {
     public void setOnda(Boolean e){
         rafagazo = e;
     }
+
+
 
 }
 

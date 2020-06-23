@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
+import com.mygdx.game.Plataforma;
 import com.mygdx.game.actores.Personaje;
 import com.mygdx.game.actores.Saibaman;
 import com.mygdx.game.input.Teclado;
@@ -48,6 +49,8 @@ public class PrimerMundo implements Screen {
 
     private Personaje p1;
     private Saibaman s1;
+    private Plataforma plataforma;
+
     private Onda onda;
     private Capsula c1;
 
@@ -73,7 +76,8 @@ public class PrimerMundo implements Screen {
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world);
         s1 = new Saibaman(world, 82, 22);
-        c1 = new Capsula(world,"Objetos/capsule.png",2500,103);
+        c1 = new Capsula(world,"Objetos/capsule.png",82,110);
+        plataforma = new Plataforma(world,82, 50);
 
         TextoInterface.SetSpriteBatch(juego.batch);
 
@@ -135,8 +139,15 @@ public class PrimerMundo implements Screen {
                         ondasToDestroy.add(ondas.get(i));
                         ondas.removeIndex(i);
                         s1.vidas--;
+
                     }
 
+                }
+
+                if(contact.getFixtureA().getBody() == p1.getCuerpo() && contact.getFixtureB().getBody() == plataforma.getCuerpo()){
+
+                    p1.eActual = Personaje.Estado.ENLASUPERFICIE;
+                    System.out.println("JAMAU");
                 }
 
                 Gdx.app.postRunnable(new Runnable() {
@@ -211,6 +222,8 @@ public class PrimerMundo implements Screen {
 
          s1.animacionAcciones(elapsedTime);
          s1.draw(juego.batch,0);
+
+         plataforma.draw(juego.batch,0);
 
          c1.draw(juego.batch,0);
 

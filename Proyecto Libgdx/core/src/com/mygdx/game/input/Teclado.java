@@ -22,12 +22,17 @@ public class Teclado implements InputProcessor {
         Gdx.app.log("eventoDown","Input "+keycode);
         switch (keycode) {
             case Input.Keys.D:
+                pj1.dActual=Personaje.Direccion.DERECHA;
+                pj1.eActual= Personaje.Estado.ANDANDO;
                 pj1.getCuerpo().applyLinearImpulse(new Vector2(80,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.A:
+                pj1.dActual= Personaje.Direccion.IZQUIERDA;
+                pj1.eActual= Personaje.Estado.ANDANDO;
                 pj1.getCuerpo().applyLinearImpulse(new Vector2(-80,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.W:
+                pj1.eActual= Personaje.Estado.SALTANDO;
                 if(pj1.getCuerpo().getLinearVelocity().y==0){
                     pj1.getCuerpo().applyLinearImpulse(new Vector2(0,180),pj1.getCuerpo().getWorldCenter(),true);
                 }

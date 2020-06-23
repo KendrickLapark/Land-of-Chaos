@@ -14,24 +14,24 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public abstract class Recolectable extends Actor {
 
-    protected Sprite sprite; //Sprite que simboliza al actor
+    public Sprite sprite; //Sprite que simboliza al actor
     private World mundo; //Mundo de nuestro juego
     private BodyDef propiedadesCuerpo; //Definidor de las propiedades del body
-    private Body cuerpo; //Cuerpo del objeto
+    public Body cuerpo; //Cuerpo del objeto
     private FixtureDef propiedadesFisicasCuerpo;//Definidor de las propiedades físicas del body
 
     public Recolectable(World m, String ruta, float x, float y){
         mundo = m;
         sprite = new Sprite(new Texture(ruta));
 
-        propiedadesFisicas();
+        propiedadesFisicas(x,y);
 
     }
 
-    public void propiedadesFisicas(){
+    public void propiedadesFisicas(float x, float y){
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(2310,110);
+        bodyDef.position.set(x,y);
         bodyDef.type = BodyDef.BodyType.StaticBody;
         cuerpo = mundo.createBody(bodyDef);
 
@@ -51,9 +51,13 @@ public abstract class Recolectable extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.setOrigin(cuerpo.getPosition().x,cuerpo.getPosition().y);
-        sprite.setBounds(cuerpo.getPosition().x-4,cuerpo.getPosition().y-4,8,8);
-        sprite.draw(batch);
+
+        if(sprite!=null){
+            sprite.setOrigin(cuerpo.getPosition().x,cuerpo.getPosition().y);
+            sprite.setBounds(cuerpo.getPosition().x-4,cuerpo.getPosition().y-4,8,8);
+            sprite.draw(batch);
+        }
+
     }
 
     public Body getCuerpo(){
