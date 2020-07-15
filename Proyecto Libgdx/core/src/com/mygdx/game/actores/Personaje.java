@@ -139,7 +139,7 @@ public class Personaje extends Actor {
 
         indexk=0;
 
-        if(body.getPosition().y<20){
+        if(body.getPosition().y<-12){
             salud = 0;
         }
 
