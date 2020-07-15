@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.objetos.Onda;
@@ -20,10 +21,11 @@ import java.util.ArrayList;
 public class Personaje extends Actor {
 
     public enum Direccion  { IZQUIERDA, DERECHA}
-    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA}
-    public enum Situacion{ AIRE, SUELO }
+    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA, STANDBY}
+    public enum Situacion{ AIRE, SUELO}
     public Direccion dActual, dPrevio;
     public Estado eActual, ePrevio;
+
 
     public World world;
     private Sprite sprite;
@@ -41,12 +43,11 @@ public class Personaje extends Actor {
 
     public ArrayList <Onda> listaOndas;
 
-    public int indexk;
+    public int indexk, salud;
 
     private float animationTime,animationTime2;
 
     private Boolean rafagazo, bKamehameha;
-
 
     public int activador;
 
@@ -56,6 +57,7 @@ public class Personaje extends Actor {
         this.world = mundo;
 
         activador = 0;
+        salud = 2;
 
         andando1 = new Texture("personajes/Goku/animacion/wg.png");
         andando2 = new Texture("personajes/Goku/animacion2/walkinggoku2.png");
@@ -81,7 +83,7 @@ public class Personaje extends Actor {
         currentWalkFrame = new TextureRegion(standr);
         listaOndas = new ArrayList<>();
 
-        eActual = Estado.ENLASUPERFICIE;
+        eActual = Estado.STANDBY;
         dActual = Direccion.DERECHA;
 
         rafagazo = false;
@@ -105,8 +107,10 @@ public class Personaje extends Actor {
             onda.draw(batch,parentAlpha);
         }
         sprite.setBounds(body.getPosition().x,body.getPosition().y,16,16);
-        sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 6);
+        sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 7);
         sprite.draw(batch);
+
+        Gdx.app.log("mensaje","Estado de goku:"+eActual);
 
     }
 
@@ -121,9 +125,11 @@ public class Personaje extends Actor {
         bodyDef.position.set(32,22);
         body = world.createBody(bodyDef);
 
+        PolygonShape polygonShape = new PolygonShape();
+
         fixtureDef = new FixtureDef();
-        fixtureDef.shape = new CircleShape();
-        fixtureDef.shape.setRadius(5f);
+        polygonShape.setAsBox(6,6);
+        fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef);
         fixtureDef.shape.dispose();
 
@@ -133,32 +139,35 @@ public class Personaje extends Actor {
 
         indexk=0;
 
-        if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x>=0){
-            dActual = Direccion.DERECHA;
+        if(body.getPosition().y<20){
+            salud = 0;
+        }
+
+        if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x>=0 && eActual != Estado.ENPLATAFORMA && dActual == Direccion.DERECHA ){
+
             ePrevio = eActual;
             eActual = Estado.SALTANDO;
             sprite = new Sprite(jumpr);
             salto.play();
             salto.setVolume(0.02f);
-        }else if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x<0){
-            dActual = Direccion.IZQUIERDA;
+        }else if(body.getLinearVelocity().y>0 && body.getLinearVelocity().x<0 && eActual != Estado.ENPLATAFORMA && dActual == Direccion.IZQUIERDA){
+
             ePrevio = eActual;
             eActual = Estado.SALTANDO;
             salto.play();
             salto.setVolume(0.02f);
             sprite = new Sprite(jumpl);
-        }else if(body.getLinearVelocity().y <0 && body.getLinearVelocity().x>=0){
-            dActual = Direccion.DERECHA;
+        }else if(body.getLinearVelocity().y <0 && body.getLinearVelocity().x>=0 && eActual != Estado.ENPLATAFORMA && dActual == Direccion.DERECHA){
+
             ePrevio = eActual;
             eActual = Estado.CALLENDO;
             sprite = new Sprite(fallr);
-        }else if(body.getLinearVelocity().y<0 && body.getLinearVelocity().x<0){
-            dActual = Direccion.IZQUIERDA;
+        }else if(body.getLinearVelocity().y<0 && body.getLinearVelocity().x<0 && eActual != Estado.ENPLATAFORMA && dActual == Direccion.IZQUIERDA){
+
             ePrevio = eActual;
             eActual = Estado.CALLENDO;
             sprite = new Sprite(falll);
         }else if(body.getLinearVelocity().x>0){
-            dActual = Direccion.DERECHA;
             ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
 
@@ -181,7 +190,7 @@ public class Personaje extends Actor {
             sprite = new Sprite(currentWalkFrame);
 
         }else if(body.getLinearVelocity().x<0){
-            dActual = Direccion.IZQUIERDA;
+
             ePrevio = eActual;
             eActual = Estado.ENLASUPERFICIE;
 
@@ -203,9 +212,9 @@ public class Personaje extends Actor {
 
             sprite = new Sprite(currentWalkFrame);
 
-        }else if(dActual == Direccion.DERECHA){
+        }else if(dActual == Direccion.DERECHA && (eActual == Estado.ENPLATAFORMA || eActual == Estado.ENLASUPERFICIE) ){
             sprite = new Sprite(standr);
-        }else{
+        }else if(dActual == Direccion.IZQUIERDA && (eActual == Estado.ENPLATAFORMA || eActual == Estado.ENLASUPERFICIE) ){
             sprite = new Sprite(standl);
         }
 
@@ -282,45 +291,19 @@ public class Personaje extends Actor {
             body.setLinearVelocity(0,body.getLinearVelocity().y);
         }
 
+        if(eActual == Estado.ENPLATAFORMA){
+           if(dActual == Direccion.IZQUIERDA) {
+               sprite = new Sprite(standl);
+           }else{
+               sprite = new Sprite(standr);
+           }
+        }
+
+
     }
 
     public Body getCuerpo(){
         return body;
-    }
-
-    public void mandoTeclado(){
-
-       /* if(Gdx.input.isKeyJustPressed(Input.Keys.D) && body.getLinearVelocity().x <= 20000){
-            body.applyLinearImpulse(new Vector2(20000,0),body.getWorldCenter(),true);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.A) && body.getLinearVelocity().x >= -20){
-            body.applyLinearImpulse(new Vector2(-80,0),body.getWorldCenter(),true);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            body.applyLinearImpulse(new Vector2(0,80),body.getWorldCenter(),true);
-            salto.play();
-            salto.setVolume(0.02f);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.S)){
-            body.setLinearVelocity(0,0);
-
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.F)){
-            rafagazo = true;
-        }else{
-            rafagazo = false;
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.E)){
-            bKamehameha = true;
-        }else{
-            bKamehameha = false;
-        }*/
-
     }
 
     public void setKamehameha(Boolean b){

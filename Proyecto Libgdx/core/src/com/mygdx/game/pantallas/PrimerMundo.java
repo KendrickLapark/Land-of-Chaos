@@ -144,11 +144,10 @@ public class PrimerMundo implements Screen {
 
                 }
 
-                if(contact.getFixtureA().getBody() == p1.getCuerpo() && contact.getFixtureB().getBody() == plataforma.getCuerpo()){
-
-                    p1.eActual = Personaje.Estado.ENLASUPERFICIE;
-                    System.out.println("JAMAU");
-                }
+                    if(contact.getFixtureA().getBody() == p1.getCuerpo() && contact.getFixtureB().getBody() == plataforma.getCuerpo()){
+                        System.out.println("En la plataforma");
+                        p1.eActual = Personaje.Estado.ENPLATAFORMA;
+                    }
 
                 Gdx.app.postRunnable(new Runnable() {
                     @Override
@@ -162,7 +161,6 @@ public class PrimerMundo implements Screen {
                         }
                     }
                 });
-
 
 
             }
@@ -200,10 +198,6 @@ public class PrimerMundo implements Screen {
 
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
-
-
-        p1.mandoTeclado();
-
         camara.update();
         camara.position.x = p1.getCuerpo().getPosition().x;
         renderer.setView(camara);
@@ -232,7 +226,12 @@ public class PrimerMundo implements Screen {
                  onda.draw(juego.batch,0);
          }
 
-        System.out.println("Posicion del player x:"+p1.getCuerpo().getPosition().x+"Posicion y:"+p1.getCuerpo().getPosition().y);
+         if(p1.salud == 0){
+             juego.setScreen(new GameOverScreen(juego));
+             dispose();
+         }
+
+        //System.out.println("Posicion del player x:"+p1.getCuerpo().getPosition().x+"Posicion y:"+p1.getCuerpo().getPosition().y);
 
          acciones();
 

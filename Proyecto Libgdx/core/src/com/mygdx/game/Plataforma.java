@@ -28,8 +28,6 @@ public class Plataforma extends Actor {
 
         propiedadesFisicas(x,y);
 
-
-
     }
 
     public void propiedadesFisicas(float x, float y){
@@ -41,7 +39,7 @@ public class Plataforma extends Actor {
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(6, 6);
+        polygonShape.setAsBox(25, 6);
         fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef);
 
@@ -50,13 +48,10 @@ public class Plataforma extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-
-
         sprite.setBounds(body.getPosition().x-6, body.getPosition().y-6,12,12);
         sprite.draw(batch);
 
         move();
-
 
     }
 
@@ -79,6 +74,5 @@ public class Plataforma extends Actor {
     public Body getCuerpo(){
         return body;
     }
-
 
 }

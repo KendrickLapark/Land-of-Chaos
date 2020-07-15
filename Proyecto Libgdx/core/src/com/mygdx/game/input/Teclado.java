@@ -32,10 +32,11 @@ public class Teclado implements InputProcessor {
                 pj1.getCuerpo().applyLinearImpulse(new Vector2(-80,0),pj1.getCuerpo().getWorldCenter(),true);
                 break;
             case Input.Keys.W:
-                pj1.eActual= Personaje.Estado.SALTANDO;
-                if(pj1.getCuerpo().getLinearVelocity().y==0){
+
+                if(pj1.getCuerpo().getLinearVelocity().y==0 || pj1.eActual == Personaje.Estado.ENPLATAFORMA){
                     pj1.getCuerpo().applyLinearImpulse(new Vector2(0,180),pj1.getCuerpo().getWorldCenter(),true);
                 }
+                pj1.eActual= Personaje.Estado.SALTANDO;
                 break;
             case Input.Keys.S:
                 if(pj1.dActual == Personaje.Direccion.DERECHA){
