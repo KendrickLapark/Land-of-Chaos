@@ -226,8 +226,9 @@ public class PrimerMundo implements Screen {
                  onda.draw(juego.batch,0);
          }
 
-         if(p1.salud == 0){
+         if(p1.salud == 0 || TextoInterface.tiempototal<0){
              juego.setScreen(new GameOverScreen(juego));
+             TextoInterface.tiempo=0;
              dispose();
          }
 

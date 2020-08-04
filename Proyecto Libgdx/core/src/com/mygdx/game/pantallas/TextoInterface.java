@@ -14,7 +14,7 @@ public class TextoInterface {
     private static BitmapFont bitmapFont1 = new BitmapFont();
     private static SpriteBatch spriteBatch;
 
-    private static float tiempo;
+    public static float tiempo;
 
     public static int tiempototal;
 
@@ -35,7 +35,7 @@ public class TextoInterface {
 
     public static void draw (OrthographicCamera camara){
 
-        tiempototal = 20;
+        tiempototal = 300;
 
         tiempo += Gdx.graphics.getDeltaTime();
         double tiemp = Math.ceil(tiempo);
@@ -54,4 +54,5 @@ public class TextoInterface {
 
 
     }
+
 }

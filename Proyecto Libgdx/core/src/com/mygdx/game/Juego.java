@@ -21,8 +21,6 @@ public class Juego extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 
-
-
 		setScreen(new PrimerMundo(this));
 	}
 
