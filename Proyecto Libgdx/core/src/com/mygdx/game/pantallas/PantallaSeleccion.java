@@ -6,39 +6,65 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Juego;
 
+
 public class PantallaSeleccion implements Screen {
 
-    private Viewport viewport;
-    private Stage stage;
 
-    private Juego juego;
+    Stage stage;
+    int personajeActual;
+    Juego juego;
 
-    void preparaUI(){
+    void preparaPantalla(){
+
+        FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("recursos/impact.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter freeTypeFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        freeTypeFontParameter.size = 15;
+        freeTypeFontParameter.borderWidth = 1;
+        freeTypeFontParameter.borderColor = Color.PURPLE;
+
+        BitmapFont bitmapFont = freeTypeFontGenerator.generateFont(freeTypeFontParameter);
+
 
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-        //textButtonStyle.font = juego.res
+        textButtonStyle.font = bitmapFont;
         textButtonStyle.fontColor = Color.WHITE;
 
-        TextButton startButton = new TextButton("Comenzar", textButtonStyle);
+        TextButton startButton = new TextButton("START", textButtonStyle);
+        startButton.setPosition(stage.getWidth() - startButton.getWidth()/0.45f, stage.getHeight() - startButton.getHeight()/0.3f);
+
+        /*startButton.addListener( new ClickListener(){
+            @Override
+            public void touchUp(InputEvent inputEvent,float x, float y, int pointer, int button){
+                //dispose();
+                juego.setScreen(new PrimerMundo(juego));
+            }
+        });*/
+
         stage.addActor(startButton);
     }
 
-    public PantallaSeleccion (Juego j){
+    public PantallaSeleccion(Juego j){
+        personajeActual = 0;
 
         this.juego = j;
-        viewport = new FitViewport(300,180, new OrthographicCamera());
-        stage = new Stage(viewport,j.batch);
-
+        FitViewport fitViewport = new FitViewport(160,120);
+        stage = new Stage(fitViewport);
         Gdx.input.setInputProcessor(stage);
+
+        preparaPantalla();
+
     }
+
 
     @Override
     public void show() {
@@ -52,6 +78,7 @@ public class PantallaSeleccion implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
+
 
     }
 
@@ -77,6 +104,8 @@ public class PantallaSeleccion implements Screen {
 
     @Override
     public void dispose() {
+
+        Gdx.input.setInputProcessor(null);
         stage.dispose();
     }
 }

@@ -92,6 +92,8 @@ public class PrimerMundo implements Screen {
 
 
 
+
+
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         camara.position.set(viewport.getScreenWidth()/2, viewport.getScreenHeight()/2,0);
