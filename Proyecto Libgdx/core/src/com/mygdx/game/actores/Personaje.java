@@ -89,6 +89,8 @@ public class Personaje extends Actor {
         rafagazo = false;
         bKamehameha = false;
 
+        sprite = new Sprite(standr);
+
         propiedadesFisicas();
 
     }
@@ -106,6 +108,7 @@ public class Personaje extends Actor {
         for (Onda onda : listaOndas){
             onda.draw(batch,parentAlpha);
         }
+
         sprite.setBounds(body.getPosition().x,body.getPosition().y,16,16);
         sprite.setPosition(body.getPosition().x - 7, body.getPosition().y - 7);
         sprite.draw(batch);

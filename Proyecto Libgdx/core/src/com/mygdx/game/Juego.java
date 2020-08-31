@@ -15,8 +15,6 @@ public class Juego extends Game {
 
 	public static final float unitScale = 1/16f;
 
-	private PrimerMundo primerMundo;
-
 	public SpriteBatch batch;
 	Screen pantallaActual;
 
