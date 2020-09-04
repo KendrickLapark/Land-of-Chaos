@@ -1,6 +1,7 @@
 package com.mygdx.game.pantallas;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,11 +22,12 @@ import com.mygdx.game.Juego;
 public class PantallaSeleccion implements Screen {
 
 
-    Stage stage;
+    private Stage stage;
     int personajeActual, cont;
-    Juego juego;
+    private Juego juego;
     TextButton startButton;
-    Texture texture1;
+    Texture texture1, texture2, texture3;
+    Image goku, vegeta, piccolo;
 
     void preparaPantalla(){
 
@@ -47,13 +49,26 @@ public class PantallaSeleccion implements Screen {
         startButton.setPosition(stage.getWidth() - startButton.getWidth()/0.45f, stage.getHeight() - startButton.getHeight());
 
         texture1 = new Texture("personajes/Goku/gstandr.png");
+        texture2 = new Texture("personajes/Vegeta/vstandr.png");
+        texture3 = new Texture("personajes/Piccolo/pstandr.png");
 
-        Image goku = new Image(texture1);
+        goku = new Image(texture1);
         goku.setBounds(16,16,20,20);
-        goku.setPosition(30,40);
+        goku.setPosition(30,50);
+
+        vegeta = new Image(texture2);
+        vegeta.setBounds(16,16,20,20);
+        vegeta.setPosition(70,50);
+
+        piccolo = new Image(texture3);
+        piccolo.setBounds(16,16,20,20);
+        piccolo.setPosition(110,50);
 
         stage.addActor(goku);
+        stage.addActor(vegeta);
+        stage.addActor(piccolo);
 
+        personajeActual = 1;
 
     }
 
@@ -64,7 +79,7 @@ public class PantallaSeleccion implements Screen {
                 @Override
                 public void touchUp(InputEvent inputEvent,float x, float y, int pointer, int button){
                     //dispose();
-                    juego.setScreen(new PrimerMundo(juego));
+                    juego.setScreen(new PrimerMundo(juego, personajeActual));
                 }
             });
 
@@ -72,12 +87,45 @@ public class PantallaSeleccion implements Screen {
             stage.addActor(startButton);
         }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.A )||(Gdx.input.isKeyPressed(Input.Keys.LEFT))){
 
+            if(personajeActual==1){
+                personajeActual=3;
+            }else{
+                personajeActual--;
+            }
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D )||(Gdx.input.isKeyPressed(Input.Keys.RIGHT))){
+
+            if(personajeActual==3){
+                personajeActual=1;
+            }else{
+                personajeActual++;
+            }
+        }
+
+            if(personajeActual==1){
+                goku.setColor(Color.WHITE);
+                vegeta.setColor(Color.GRAY);
+                piccolo.setColor(Color.GRAY);
+            }
+
+            if(personajeActual==2){
+                goku.setColor(Color.GRAY);
+                vegeta.setColor(Color.WHITE);
+                piccolo.setColor(Color.GRAY);
+            }
+
+            if(personajeActual==3){
+                goku.setColor(Color.GRAY);
+                vegeta.setColor(Color.GRAY);
+                piccolo.setColor(Color.WHITE);
+            }
 
     }
 
     public PantallaSeleccion(Juego j){
-        personajeActual = 0;
         cont = 0;
 
         this.juego = j;
@@ -102,7 +150,6 @@ public class PantallaSeleccion implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
-
 
         controlador();
 
@@ -133,5 +180,9 @@ public class PantallaSeleccion implements Screen {
 
         Gdx.input.setInputProcessor(null);
         stage.dispose();
+    }
+
+    public int getPersonajeActual(){
+        return  personajeActual;
     }
 }

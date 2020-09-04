@@ -62,19 +62,22 @@ public class PrimerMundo implements Screen {
 
     private Array<Onda> ondas, ondasToDestroy;
 
+    public int personajeSeleccionado;
+
     float elapsedTime;
 
     private Teclado teclado;
 
 
-    public PrimerMundo(Juego j){
+    public PrimerMundo(Juego j, int personajeElegido){
         this.juego = j;
+        personajeSeleccionado = personajeElegido;
         camara = new OrthographicCamera();
         viewport = new FitViewport(300,180,camara);
         world = new World(new Vector2(0,-98f),true);
         mapa = new TmxMapLoader().load("mapa/m1,5.tmx");
         renderer = new OrthogonalTiledMapRenderer(mapa);
-        p1 = new Personaje(world);
+        p1 = new Personaje(world, personajeElegido);
         s1 = new Saibaman(world, 82, 22);
         c1 = new Capsula(world,"Objetos/capsule.png",82,110);
         plataforma = new Plataforma(world,82, 50);
@@ -229,7 +232,7 @@ public class PrimerMundo implements Screen {
          }
 
          if(p1.salud == 0 || TextoInterface.tiempototal<0){
-             juego.setScreen(new GameOverScreen(juego));
+             juego.setScreen(new GameOverScreen(juego, personajeSeleccionado));
              TextoInterface.tiempo=0;
              dispose();
          }

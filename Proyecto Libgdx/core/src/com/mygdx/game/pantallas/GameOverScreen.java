@@ -23,8 +23,11 @@ public class GameOverScreen implements Screen {
 
     private Juego juego;
 
-    public GameOverScreen(Juego j){
+    public int personajeElegido;
+
+    public GameOverScreen(Juego j, int personajeSelect){
         this.juego = j;
+        personajeElegido = personajeSelect;
         viewport = new FitViewport(300,180, new OrthographicCamera());
         stage = new Stage(viewport,j.batch);
 
@@ -52,7 +55,7 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if(Gdx.input.justTouched()){
-            juego.setScreen(new PrimerMundo(juego));
+            juego.setScreen(new PrimerMundo(juego, personajeElegido));
         }
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

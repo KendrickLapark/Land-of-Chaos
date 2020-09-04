@@ -17,6 +17,7 @@ public class Juego extends Game {
 
 	public SpriteBatch batch;
 	Screen pantallaActual;
+	public PantallaSeleccion pantallaSeleccion;
 
 	@Override
 	public void create () {
