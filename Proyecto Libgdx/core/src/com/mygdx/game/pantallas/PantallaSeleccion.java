@@ -3,6 +3,7 @@ package com.mygdx.game.pantallas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -25,11 +26,18 @@ public class PantallaSeleccion implements Screen {
     private Stage stage;
     int personajeActual, cont;
     private Juego juego;
+    private Music musica;
     TextButton startButton;
-    Texture texture1, texture2, texture3;
-    Image goku, vegeta, piccolo;
+    Texture texture1, texture2, texture3, texture4;
+    Image goku, vegeta, piccolo, fondo;
 
     void preparaPantalla(){
+
+
+        musica = Gdx.audio.newMusic(Gdx.files.internal("sonido/musica/menumusic.mp3"));
+        musica.play();
+        musica.setVolume(0.03f);
+        musica.setLooping(true);
 
         FreeTypeFontGenerator freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("recursos/impact.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter freeTypeFontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -51,6 +59,10 @@ public class PantallaSeleccion implements Screen {
         texture1 = new Texture("personajes/Goku/gstandr.png");
         texture2 = new Texture("personajes/Vegeta/vstandr.png");
         texture3 = new Texture("personajes/Piccolo/pstandr.png");
+        texture4 = new Texture("recursos/fondops2.jpg");
+
+        fondo = new Image(texture4);
+        fondo.setSize(stage.getWidth(),stage.getHeight());
 
         goku = new Image(texture1);
         goku.setBounds(16,16,20,20);
@@ -64,6 +76,7 @@ public class PantallaSeleccion implements Screen {
         piccolo.setBounds(16,16,20,20);
         piccolo.setPosition(110,50);
 
+        stage.addActor(fondo);
         stage.addActor(goku);
         stage.addActor(vegeta);
         stage.addActor(piccolo);
@@ -80,6 +93,7 @@ public class PantallaSeleccion implements Screen {
                 public void touchUp(InputEvent inputEvent,float x, float y, int pointer, int button){
                     //dispose();
                     juego.setScreen(new PrimerMundo(juego, personajeActual));
+                    dispose();
                 }
             });
 
@@ -178,8 +192,8 @@ public class PantallaSeleccion implements Screen {
     @Override
     public void dispose() {
 
-        Gdx.input.setInputProcessor(null);
         stage.dispose();
+        musica.dispose();
     }
 
     public int getPersonajeActual(){
