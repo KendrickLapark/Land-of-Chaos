@@ -63,7 +63,6 @@ public class Teclado implements InputProcessor {
             case Input.Keys.E:
                 pj1.setKamehameha(false);
                 pj1.kamehamehaSound.stop();
-                pj1.activador++;
         }
 
         return false;

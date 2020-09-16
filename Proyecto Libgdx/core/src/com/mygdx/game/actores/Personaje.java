@@ -21,36 +21,33 @@ import java.util.ArrayList;
 
 public class Personaje extends Actor {
 
-    public enum Direccion  { IZQUIERDA, DERECHA}
-    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA, STANDBY}
-    public enum Situacion{ AIRE, SUELO}
-    public Direccion dActual, dPrevio;
-    public Estado eActual, ePrevio;
+    public enum Direccion  { IZQUIERDA, DERECHA} // Enumerado que indica la dirección del personaje.
+    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA, STANDBY} // Enumerado con distintos estados del personaje.
+    public enum Situacion{ AIRE, SUELO} // Enumerado que indica si el personaje esta en el suelo o en el aire.
+    public Direccion dActual, dPrevio; // Variable con la direccion actual del personaje.
+    public Estado eActual, ePrevio; // Variable con el estado actual y previo del personaje.
 
+    public World world; // Mundo del juego.
+    private Sprite sprite; // Sprite que muestra el aspecto del personaje;
+    public Music salto, caida, kamehamehaSound; // Sonidos del personaje en el juego.
+    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL, lanzaR, lanzaL; // Texturas que componen los distintas acciones del personaje.
 
-    public World world;
-    private Sprite sprite;
-    public Music salto, caida, kamehamehaSound;
-    private Texture standr,standl,jumpr, fallr, jumpl, falll,andando1,andando2,rafaga1, rafaga2,kamehamehaTexture,kamehamehaTextureL, lanzaR, lanzaL;
+    public Body body; //Cuerpo del personaje
+    private BodyDef bodyDef; // Propiedades del cuerpo del personaje.
+    private FixtureDef fixtureDef; // Propiedades geométricas del cuerpo del personaje.
 
-    public Body body;
-    private BodyDef bodyDef;
-    private FixtureDef fixtureDef;
+    private Animation walkAnimation; // Animación del personaje andando.
+    private TextureRegion[]walkFrames; // Array de partes de la textura que compone la animación del personaje andando.
+    private TextureRegion[][]tmp; // Array con las partes que componen la animación del personaje.
+    private TextureRegion currentWalkFrame; // Textura que muestra el frame actual del personaje andando.
 
-    private Animation walkAnimation;
-    private TextureRegion[]walkFrames;
-    private TextureRegion[][]tmp;
-    TextureRegion currentWalkFrame;
+    public ArrayList <Onda> listaOndas; // ArrayList que contiene las ondas lanzadas por el personaje.
 
-    public ArrayList <Onda> listaOndas;
+    private float animationTime;
 
-    public int indexk, salud;
+    private Boolean rafagazo, bKamehameha, loop; // Boolean para indicar si el personaje esta lanzando una ráfaga, un kamehameha , y para controlar si las animaciones cuando esta andando se repiten o no.
 
-    private float animationTime,animationTime2;
-
-    private Boolean rafagazo, bKamehameha, loop;
-
-    public int activador, personajeNumero;
+    public int personajeNumero, indexk, salud; // Variable que indica la opción elegida en la pantalla de elección de personaje, un contador para recorrer el bucle de la animación del personaje andando y la salud del personaje.
 
 
     public Personaje(World mundo, int personajeElegido){
@@ -59,7 +56,6 @@ public class Personaje extends Actor {
 
         personajeNumero = personajeElegido;
 
-        activador = 0;
         salud = 2;
 
         eleccionPersonaje();
@@ -99,10 +95,6 @@ public class Personaje extends Actor {
         Gdx.app.log("mensaje","Estado de goku:"+eActual);
 
     }
-
-   /* public void updateFrame(float elapsedTime){
-        currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
-    }*/
 
     public void propiedadesFisicas(){
 
@@ -158,8 +150,6 @@ public class Personaje extends Actor {
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
 
-
-
                 if(personajeNumero == 1){
                     a = 3;
                     loop = true;
@@ -200,8 +190,6 @@ public class Personaje extends Actor {
 
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
-
-
 
                 if( personajeNumero == 1 ){
                     a = 3;
@@ -410,7 +398,6 @@ public class Personaje extends Actor {
     public void setOnda(Boolean e){
         rafagazo = e;
     }
-
 
 }
 
