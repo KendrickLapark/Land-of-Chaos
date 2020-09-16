@@ -48,7 +48,7 @@ public class Personaje extends Actor {
 
     private float animationTime,animationTime2;
 
-    private Boolean rafagazo, bKamehameha;
+    private Boolean rafagazo, bKamehameha, loop;
 
     public int activador, personajeNumero;
 
@@ -74,7 +74,7 @@ public class Personaje extends Actor {
 
         propiedadesFisicas();
 
-
+        loop = true;
 
     }
 
@@ -158,18 +158,24 @@ public class Personaje extends Actor {
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
 
-                tmp = TextureRegion.split(andando1,37,58);
 
-                if(personajeNumero==1){
-                    a = 4;
+
+                if(personajeNumero == 1){
+                    a = 3;
+                    loop = true;
+                    tmp = TextureRegion.split(andando1,37,58);
                 }
 
-                if(personajeNumero==2){
+                if(personajeNumero == 2){
                     a = 2;
+                    loop = false;
+                    tmp = TextureRegion.split(andando1,35,58);
                 }
 
-                if(personajeNumero==3){
+                if(personajeNumero == 3){
                     a = 2;
+                    loop = false;
+                    tmp = TextureRegion.split(andando1,37,58);
                 }
 
                 walkFrames = new TextureRegion[a];
@@ -178,13 +184,13 @@ public class Personaje extends Actor {
 
                 for(int i = 0; i<a;i++){
                     for(int j = 0; j<1;j++){
-                        walkFrames[index++] = tmp[j][a];
+                        walkFrames[index++] = tmp[j][i];
                     }
                 }
 
                 walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames); // a mas número la animacion va mas lento , a 1 va muy lento a 0.001 muy rapido()
 
-                currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
+                currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),loop);
 
                 sprite = new Sprite(currentWalkFrame);
 
@@ -195,18 +201,23 @@ public class Personaje extends Actor {
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
 
-                tmp = TextureRegion.split(andando2,37,58);
 
-                if(personajeNumero==1){
-                    a = 4;
+
+                if( personajeNumero == 1 ){
+                    a = 3;
+                    tmp = TextureRegion.split(andando2,37,58);
                 }
 
-                if(personajeNumero==2){
+                if( personajeNumero == 2 ){
                     a = 2;
+                    loop = false;
+                    tmp = TextureRegion.split(andando2,35,58);
                 }
 
-                if(personajeNumero==3){
+                if( personajeNumero == 3){
                     a = 2;
+                    loop = false;
+                    tmp = TextureRegion.split(andando2,39,58);
                 }
 
                 walkFrames = new TextureRegion[a];
@@ -215,13 +226,13 @@ public class Personaje extends Actor {
 
                 for(int i = 0; i<a;i++){
                     for(int j = 0; j<1;j++){
-                        walkFrames[index2++] = tmp[j][a];
+                        walkFrames[index2++] = tmp[j][i];
                     }
                 }
 
                 walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames);
 
-                currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
+                currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),loop);
 
                 sprite = new Sprite(currentWalkFrame);
 

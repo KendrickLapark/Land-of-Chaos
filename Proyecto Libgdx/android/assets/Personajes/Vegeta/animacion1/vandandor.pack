@@ -6,7 +6,7 @@ repeat: none
 vandandor
   rotate: false
   xy: 1, 1
-  size: 126, 44
-  orig: 126, 44
+  size: 66, 44
+  orig: 66, 44
   offset: 0, 0
   index: -1
