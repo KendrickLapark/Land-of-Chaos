@@ -67,38 +67,7 @@ public class Personaje extends Actor {
         kamehamehaTexture = new Texture("personajes/Goku/kamehameha/kamehamehaR.png");
         kamehamehaTextureL = new Texture("personajes/Goku/kamehameha/kamehamehaL.png");
 
-
-        if(personajeElegido==1){
-            standr = new Texture("personajes/Goku/gstandr.png");
-            standl = new Texture("personajes/Goku/gstandl.png");
-            jumpr = new Texture("personajes/Goku/gjumpr.png");
-            jumpl = new Texture("personajes/Goku/gjumpl.png");
-            fallr = new Texture("personajes/Goku/gfallr.png");
-            falll = new Texture("personajes/Goku/gfalll.png");
-            rafaga1 = new Texture("personajes/Goku/gokurafaga.png");
-            rafaga2 = new Texture("personajes/Goku/gokurafagaL.png");
-
-            lanzaR = new Texture("personajes/Goku/kamehameha/lanzandoR.png");
-            lanzaL = new Texture("personajes/Goku/kamehameha/lanzandoL.png");
-
-            salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
-            caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
-            kamehamehaSound = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/kamehameha.mp3"));
-
-            sprite = new Sprite(standr);
-
-            currentWalkFrame = new TextureRegion(standr);
-        }
-
-        if(personajeElegido==2){
-            standr = new Texture("personajes/Vegeta/vstandr.png");
-            sprite = new Sprite(standr);
-        }
-
-        if(personajeElegido==3){
-            standr = new Texture("personajes/Piccolo/pstandr.png");
-            sprite = new Sprite(standr);
-        }
+        eleccionPersonaje();
 
         listaOndas = new ArrayList<>();
 
@@ -158,8 +127,6 @@ public class Personaje extends Actor {
     }
 
     public void animacionAcciones(float elapsedTime){
-
-        if(personajeNumero==1){
 
             indexk=0;
 
@@ -323,10 +290,67 @@ public class Personaje extends Actor {
                 }
             }
 
+    }
+
+    public void eleccionPersonaje(){
+
+        if(personajeNumero==1){
+            standr = new Texture("personajes/Goku/gstandr.png");
+            standl = new Texture("personajes/Goku/gstandl.png");
+            jumpr = new Texture("personajes/Goku/gjumpr.png");
+            jumpl = new Texture("personajes/Goku/gjumpl.png");
+            fallr = new Texture("personajes/Goku/gfallr.png");
+            falll = new Texture("personajes/Goku/gfalll.png");
+            rafaga1 = new Texture("personajes/Goku/gokurafaga.png");
+            rafaga2 = new Texture("personajes/Goku/gokurafagaL.png");
+
+            lanzaR = new Texture("personajes/Goku/kamehameha/lanzandoR.png");
+            lanzaL = new Texture("personajes/Goku/kamehameha/lanzandoL.png");
+
+            salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
+            caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
+            kamehamehaSound = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/kamehameha.mp3"));
+
+            sprite = new Sprite(standr);
+
+            currentWalkFrame = new TextureRegion(standr);
         }
 
+        if(personajeNumero==2){
+            standr = new Texture("personajes/Vegeta/vstandr.png");
+            standl = new Texture("personajes/Vegeta/vstandl.png");
+            jumpr = new Texture("personajes/Vegeta/vjumpr.png");
+            jumpl = new Texture("personajes/Vegeta/vjumpl.png");
+            fallr = new Texture("personajes/Vegeta/vfallr.png");
+            falll = new Texture("personajes/Vegeta/vfalll.png");
+            rafaga1 = new Texture("personajes/Vegeta/vrafagar.png");
+            rafaga2 = new Texture("personajes/Vegeta/vrafagal.png");
 
+            salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
+            caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
 
+            sprite = new Sprite(standr);
+
+            currentWalkFrame = new TextureRegion(standr);
+        }
+
+        if(personajeNumero==3){
+            standr = new Texture("personajes/Piccolo/pstandr.png");
+            standl = new Texture("personajes/Piccolo/pstandl.png");
+            jumpr = new Texture("personajes/Piccolo/pjumpr.png");
+            jumpl = new Texture("personajes/Piccolo/pjumpl.png");
+            fallr = new Texture("personajes/Piccolo/pfallr.png");
+            falll = new Texture("personajes/Piccolo/pfalll.png");
+            rafaga1 = new Texture("personajes/Piccolo/prafagar.png");
+            rafaga2 = new Texture("personajes/Piccolo/prafagal.png");
+
+            salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
+            caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
+
+            sprite = new Sprite(standr);
+
+            currentWalkFrame = new TextureRegion(standr);
+        }
 
     }
 
