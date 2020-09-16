@@ -62,11 +62,6 @@ public class Personaje extends Actor {
         activador = 0;
         salud = 2;
 
-        andando1 = new Texture("personajes/Goku/animacion/wg.png");
-        andando2 = new Texture("personajes/Goku/animacion2/walkinggoku2.png");
-        kamehamehaTexture = new Texture("personajes/Goku/kamehameha/kamehamehaR.png");
-        kamehamehaTextureL = new Texture("personajes/Goku/kamehameha/kamehamehaL.png");
-
         eleccionPersonaje();
 
         listaOndas = new ArrayList<>();
@@ -77,9 +72,9 @@ public class Personaje extends Actor {
         rafagazo = false;
         bKamehameha = false;
 
-
-
         propiedadesFisicas();
+
+
 
     }
 
@@ -159,22 +154,35 @@ public class Personaje extends Actor {
                 eActual = Estado.CALLENDO;
                 sprite = new Sprite(falll);
             }else if(body.getLinearVelocity().x>0){
+                int a = 0;
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
 
                 tmp = TextureRegion.split(andando1,37,58);
 
-                walkFrames = new TextureRegion[4];
+                if(personajeNumero==1){
+                    a = 4;
+                }
+
+                if(personajeNumero==2){
+                    a = 2;
+                }
+
+                if(personajeNumero==3){
+                    a = 2;
+                }
+
+                walkFrames = new TextureRegion[a];
 
                 int index = 0;
 
-                for(int i = 0; i<4;i++){
+                for(int i = 0; i<a;i++){
                     for(int j = 0; j<1;j++){
-                        walkFrames[index++] = tmp[j][i];
+                        walkFrames[index++] = tmp[j][a];
                     }
                 }
 
-                walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames);             // a mas número la animacion va mas lento , a 1 va muy lento a 0.001 muy rapido()
+                walkAnimation = new Animation(body.getLinearVelocity().x*(1/(7*body.getLinearVelocity().x)),walkFrames); // a mas número la animacion va mas lento , a 1 va muy lento a 0.001 muy rapido()
 
                 currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((elapsedTime),true);
 
@@ -182,18 +190,32 @@ public class Personaje extends Actor {
 
             }else if(body.getLinearVelocity().x<0){
 
+                int a = 0;
+
                 ePrevio = eActual;
                 eActual = Estado.ENLASUPERFICIE;
 
                 tmp = TextureRegion.split(andando2,37,58);
 
-                walkFrames = new TextureRegion[4];
+                if(personajeNumero==1){
+                    a = 4;
+                }
+
+                if(personajeNumero==2){
+                    a = 2;
+                }
+
+                if(personajeNumero==3){
+                    a = 2;
+                }
+
+                walkFrames = new TextureRegion[a];
 
                 int index2 = 0;
 
-                for(int i = 0; i<4;i++){
+                for(int i = 0; i<a;i++){
                     for(int j = 0; j<1;j++){
-                        walkFrames[index2++] = tmp[j][i];
+                        walkFrames[index2++] = tmp[j][a];
                     }
                 }
 
@@ -311,6 +333,12 @@ public class Personaje extends Actor {
             caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
             kamehamehaSound = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/kamehameha.mp3"));
 
+
+            andando1 = new Texture("personajes/Goku/animacion/wg.png");
+            andando2 = new Texture("personajes/Goku/animacion2/walkinggoku2.png");
+            kamehamehaTexture = new Texture("personajes/Goku/kamehameha/kamehamehaR.png");
+            kamehamehaTextureL = new Texture("personajes/Goku/kamehameha/kamehamehaL.png");
+
             sprite = new Sprite(standr);
 
             currentWalkFrame = new TextureRegion(standr);
@@ -325,9 +353,13 @@ public class Personaje extends Actor {
             falll = new Texture("personajes/Vegeta/vfalll.png");
             rafaga1 = new Texture("personajes/Vegeta/vrafagar.png");
             rafaga2 = new Texture("personajes/Vegeta/vrafagal.png");
+            andando1 = new Texture("personajes/Vegeta/animacion1/vandandor.png");
+            andando2 = new Texture("personajes/Vegeta/animacion2/vandandol.png");
 
             salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
             caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
+
+
 
             sprite = new Sprite(standr);
 
@@ -343,6 +375,8 @@ public class Personaje extends Actor {
             falll = new Texture("personajes/Piccolo/pfalll.png");
             rafaga1 = new Texture("personajes/Piccolo/prafagar.png");
             rafaga2 = new Texture("personajes/Piccolo/prafagal.png");
+            andando1 = new Texture("personajes/Piccolo/animacion1/pandandor.png");
+            andando2 = new Texture("personajes/Piccolo/animacion2/pandandol.png");
 
             salto = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/salto.mp3"));
             caida = Gdx.audio.newMusic(Gdx.files.internal("sonido/efectos/caidatrassalto.mp3"));
