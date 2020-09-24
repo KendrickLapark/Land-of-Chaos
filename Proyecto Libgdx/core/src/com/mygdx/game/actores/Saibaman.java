@@ -51,14 +51,13 @@ public class Saibaman extends Actor {
 
         posInicialX = body.getPosition().x;
 
-
     }
 
     public void propiedadesFisicas(float x, float y){
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.position.set(x,y); //x=2090 y=69, zona inicial
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();

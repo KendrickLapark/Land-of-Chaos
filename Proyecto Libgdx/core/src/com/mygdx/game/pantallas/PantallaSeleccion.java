@@ -24,9 +24,9 @@ public class PantallaSeleccion implements Screen {
 
 
     private Stage stage;
-    int personajeActual, cont;
-    private Juego juego;
-    private Music musica;
+    int personajeActual, cont; // Variable con el personaje sobre el que recae el foco de elección y un contador.
+    private Juego juego; // Juego en el que se muestra la  pantalla.
+    private Music musica; // Música de la pantalla
     TextButton startButton;
     Texture texture1, texture2, texture3, texture4;
     Image goku, vegeta, piccolo, fondo;

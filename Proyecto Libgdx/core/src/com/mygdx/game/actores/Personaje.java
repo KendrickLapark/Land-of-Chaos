@@ -14,10 +14,15 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.mygdx.game.objetos.Onda;
 import com.mygdx.game.pantallas.PantallaSeleccion;
 
+import java.awt.Color;
 import java.util.ArrayList;
+
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 public class Personaje extends Actor {
 

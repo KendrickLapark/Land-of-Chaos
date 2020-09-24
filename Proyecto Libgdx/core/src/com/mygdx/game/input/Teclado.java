@@ -41,11 +41,11 @@ public class Teclado implements InputProcessor {
             case Input.Keys.S:
                 if(pj1.dActual == Personaje.Direccion.DERECHA){
                     pj1.getCuerpo().setLinearVelocity(0,0);
-                    System.out.println("Direccion tras bajasr:"+pj1.dActual);
+                    System.out.println("Direccion tras bajar:"+pj1.dActual);
 
                 }else{
                     pj1.getCuerpo().setLinearVelocity(0,0);
-                    System.out.println("Direccion tras bajasr:"+pj1.dActual);
+                    System.out.println("Direccion tras bajar:"+pj1.dActual);
                 }
 
                 break;

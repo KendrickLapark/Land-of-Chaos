@@ -75,10 +75,10 @@ public class PrimerMundo implements Screen {
         camara = new OrthographicCamera();
         viewport = new FitViewport(300,180,camara);
         world = new World(new Vector2(0,-98f),true);
-        mapa = new TmxMapLoader().load("mapa/m1,5.tmx");
+        mapa = new TmxMapLoader().load("mapa/mapav2.tmx"); //m1,5 (mapa original)
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world, personajeElegido);
-        s1 = new Saibaman(world, 82, 22);
+        s1 = new Saibaman(world, 122, 42);
         c1 = new Capsula(world,"Objetos/capsule.png",82,110);
         plataforma = new Plataforma(world,82, 50);
 
@@ -93,10 +93,6 @@ public class PrimerMundo implements Screen {
         musica.setVolume(0.03f);
         musica.setLooping(true);
 
-
-
-
-
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         camara.position.set(viewport.getScreenWidth()/2, viewport.getScreenHeight()/2,0);
@@ -106,7 +102,7 @@ public class PrimerMundo implements Screen {
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
-        for(MapObject object : mapa.getLayers().get("suelo").getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : mapa.getLayers().get("Suelo").getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
