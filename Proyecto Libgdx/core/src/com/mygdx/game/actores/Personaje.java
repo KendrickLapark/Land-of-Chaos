@@ -105,7 +105,7 @@ public class Personaje extends Actor {
 
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(32,22);
+        bodyDef.position.set(32,39);
         body = world.createBody(bodyDef);
 
         PolygonShape polygonShape = new PolygonShape();

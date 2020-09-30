@@ -80,7 +80,7 @@ public class Saibaman extends Actor {
             sprite.setBounds(body.getPosition().x-7,body.getPosition().y-7,16,16);
             sprite.setPosition(body.getPosition().x - 9f, body.getPosition().y - 9);
             sprite.draw(batch);
-            //patrullar();
+            patrullar();
         }
 
 
@@ -88,9 +88,12 @@ public class Saibaman extends Actor {
 
     public void patrullar() {
 
-       if(body.getPosition().x<2200){
+        int a = 100;
+        int b = 450;
 
-           if(body.getPosition().x < 2200 && ida == true){
+       if(body.getPosition().x<164){
+
+           if(body.getPosition().x < b && ida == true){
                body.setLinearVelocity(36,0);
            }else{
                ida = false;
@@ -102,13 +105,13 @@ public class Saibaman extends Actor {
            }
 
        }else{
-           if(body.getPosition().x<2200 && ida == true){
+           if(body.getPosition().x<b   && ida == true){
                body.setLinearVelocity(36,0);
            }else{
                ida = false;
            }
 
-           if(body.getPosition().x>2200 && ida == false){
+           if(body.getPosition().x>a && ida == false){
                body.setLinearVelocity(-36,0);
            }else{
                ida = true;

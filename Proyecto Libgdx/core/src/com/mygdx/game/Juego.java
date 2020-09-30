@@ -23,7 +23,7 @@ public class Juego extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 
-		setScreen(new PantallaSeleccion(this));
+		setScreen(new PrimerMundo(this,1));
 	}
 
 	public void setPantallaActual(Screen pa){

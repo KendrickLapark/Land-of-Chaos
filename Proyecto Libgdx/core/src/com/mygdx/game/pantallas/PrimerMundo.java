@@ -78,7 +78,7 @@ public class PrimerMundo implements Screen {
         mapa = new TmxMapLoader().load("mapa/mapav2.tmx"); //m1,5 (mapa original)
         renderer = new OrthogonalTiledMapRenderer(mapa);
         p1 = new Personaje(world, personajeElegido);
-        s1 = new Saibaman(world, 122, 42);
+        s1 = new Saibaman(world, 332, 42);
         c1 = new Capsula(world,"Objetos/capsule.png",82,110);
         plataforma = new Plataforma(world,82, 50);
 
@@ -209,6 +209,8 @@ public class PrimerMundo implements Screen {
 
         box2DDebugRenderer.render(world,camara.combined);
         juego.batch.setProjectionMatrix(camara.combined);
+
+        System.out.println("Altura en el eje x"+p1.getCuerpo().getPosition().x);
 
         juego.batch.begin();
         TextoInterface.draw(camara);

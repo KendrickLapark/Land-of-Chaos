@@ -59,7 +59,7 @@ public class Plataforma extends Actor {
 
         if(this.body.getPosition().y>100){
            actual = Estado.BAJANDO;
-        }else if(this.body.getPosition().y<35){
+        }else if(this.body.getPosition().y<60){
             actual = Estado.SUBIENDO;
         }
 
