@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -66,6 +68,8 @@ public class PrimerMundo implements Screen {
 
     float elapsedTime;
 
+    Texture blank;
+
     private Teclado teclado;
 
 
@@ -81,6 +85,8 @@ public class PrimerMundo implements Screen {
         s1 = new Saibaman(world, 332, 42);
         c1 = new Capsula(world,"Objetos/capsule.png",82,110);
         plataforma = new Plataforma(world,82, 50);
+
+        blank = new Texture("recursos/blank.png");
 
         TextoInterface.SetSpriteBatch(juego.batch);
 
@@ -238,6 +244,9 @@ public class PrimerMundo implements Screen {
         //System.out.println("Posicion del player x:"+p1.getCuerpo().getPosition().x+"Posicion y:"+p1.getCuerpo().getPosition().y);
 
          acciones();
+
+        juego.batch.setColor(Color.GREEN);
+        juego.batch.draw(blank, 100, 100, p1.body.getPosition().y, 20);
 
         juego.batch.end();
     }
