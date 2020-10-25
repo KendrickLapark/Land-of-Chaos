@@ -254,11 +254,11 @@ public class PrimerMundo implements Screen {
          */
 
         juego.batch.setColor(Color.GRAY);
-        juego.batch.draw(blank,p1.body.getPosition().x-25,10, 100,2);
+        juego.batch.draw(blank,p1.body.getPosition().x-50,10, 100,2);
 
         juego.batch.setColor(Color.YELLOW);
 
-        juego.batch.draw(blank, p1.body.getPosition().x-25, 10, p1.getKi(), 2);
+        juego.batch.draw(blank, p1.body.getPosition().x-50, 10, p1.getKi(), 2);
 
 
 
@@ -297,24 +297,31 @@ public class PrimerMundo implements Screen {
 
     }
 
-
     public void acciones(){
         if(Gdx.input.isKeyPressed(Input.Keys.F)){
-            p1.setOnda(true);
+            if(p1.getKi()>10){
+                p1.setOnda(true);
+            }
 
         }else{
             p1.setOnda(false);
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.X)){
+            if(p1.getKi()<=98){
+                p1.setKi(2);
+            }
+
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
 
             if(p1.getKi()>10){
                 ondas.add(new Onda(world,p1));
-                p1.setKi(10);
+                p1.setKi(-10);
             }
 
         }
     }
-
 
 }

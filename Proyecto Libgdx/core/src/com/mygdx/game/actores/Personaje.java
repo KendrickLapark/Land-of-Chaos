@@ -54,6 +54,7 @@ public class Personaje extends Actor {
 
     public int personajeNumero, indexk, salud, ki; // Variable que indica la opción elegida en la pantalla de elección de personaje, un contador para recorrer el bucle de la animación del personaje andando y la salud del personaje.
 
+    public double tiempo;
 
     public Personaje(World mundo, int personajeElegido){
 
@@ -135,6 +136,10 @@ public class Personaje extends Actor {
     public void animacionAcciones(float elapsedTime){
 
             indexk=0;
+
+            tiempo = Math.ceil(Gdx.graphics.getDeltaTime());
+
+        System.out.println("Tiempo----->"+tiempo);
 
             if(body.getPosition().y<-12){
                 salud = 0;
@@ -331,45 +336,26 @@ public class Personaje extends Actor {
 
             if(cargando == true){
 
-                sprite = new Sprite(new Texture("personajes/Goku/cargaR2.png"));
+                if(dActual == Direccion.DERECHA){
+                    sprite = new Sprite(new Texture("personajes/Goku/cargaR2.png"));
+                }
+
+                if(dActual == Direccion.IZQUIERDA){
+                    sprite = new Sprite(new Texture("personajes/Goku/cargaL.png"));
+                }
+
                 body.setLinearVelocity(0,0);
                 recargaki.play();
                 recargaki.setVolume(0.03f);
 
-                if(ki<98){
+                /*if(ki<98){
                     ki += elapsedTime;
-                }
-
-                /*animationTime+=0.03f;
-
-                tmp = TextureRegion.split(cargandoR,45,44);
-
-                walkFrames = new TextureRegion[10];
-
-                indexk = 0;
-
-                for(int i = 0; i<10;i++){
-                    for(int j = 0; j<1;j++){
-                        walkFrames[indexk++] = tmp[j][i];
-                    }
-                }
-
-                walkAnimation = new Animation(0.2f,walkFrames);
-
-                currentWalkFrame =  (TextureRegion)walkAnimation.getKeyFrame((animationTime),true);
-
-                sprite = new Sprite(currentWalkFrame);
-
-                recargaki.play();
-                recargaki.setVolume(0.03f);
-
-                body.setLinearVelocity(0,0);*/
+                }*/
 
             }else{
+                elapsedTime=0;
                 recargaki.stop();
             }
-
-        System.out.println("KIKIKIKI---------->"+ki);
 
     }
 
@@ -460,8 +446,8 @@ public class Personaje extends Actor {
     public int getKi(){ return ki; }
 
     public void setKi(int cantKi){
-        if(ki>0){
-            ki-=cantKi;
+        if(ki>=0){
+            ki+=cantKi;
         }
 
     }

@@ -58,9 +58,9 @@ public class Onda extends Actor {
     public void fisica(){
         BodyDef bodyDef = new BodyDef();
         if(pj1.dActual == Personaje.Direccion.DERECHA){
-            bodyDef.position.set(pj1.getCuerpo().getPosition().x+5,pj1.getCuerpo().getPosition().y+2);
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x+7,pj1.getCuerpo().getPosition().y+2);
         }else{
-            bodyDef.position.set(pj1.getCuerpo().getPosition().x-5,pj1.getCuerpo().getPosition().y+2);
+            bodyDef.position.set(pj1.getCuerpo().getPosition().x-7,pj1.getCuerpo().getPosition().y+2);
         }
 
         bodyDef.type = BodyDef.BodyType.DynamicBody;
