@@ -169,7 +169,6 @@ public class PrimerMundo implements Screen {
                     }
                 });
 
-
             }
 
             @Override
@@ -213,7 +212,7 @@ public class PrimerMundo implements Screen {
 
         renderer.render();
 
-        box2DDebugRenderer.render(world,camara.combined);
+        //box2DDebugRenderer.render(world,camara.combined);
         juego.batch.setProjectionMatrix(camara.combined);
 
         System.out.println("Altura en el eje x"+p1.getCuerpo().getPosition().x);
@@ -245,8 +244,25 @@ public class PrimerMundo implements Screen {
 
          acciones();
 
-        juego.batch.setColor(Color.GREEN);
-        juego.batch.draw(blank, 100, 100, p1.body.getPosition().y, 20);
+        /**
+         * TODO BARRA DE KI
+         * 1. ESTABLECER LA BARRA ESTATICA EN PANTALLA (COMO EL TIEMPO, PRUEBA A PONERLO EN LA MISMA CLASE)
+         * 2. CREAR BOTÓN ESTATICO EN PANTALLA (PISTA: ES UN CONTROL DEL JUEGO)
+         * 3. CREAR VARIABLE "KI" QUE CON EL EVENTO ON CLIC DEL BOTÓN, AUMENTE LA ANCHURA DE LA BARRA (TIP: LA VARIABLE DEBE TENER UN MÁXIMO)
+         * 4. AL LANZAR ONDA DE ENERGIA RESTAR LA VARIABLE KI
+         * 5. SI KI == 0, NO LANZA ONDA
+         */
+
+        juego.batch.setColor(Color.GRAY);
+        juego.batch.draw(blank,p1.body.getPosition().x-25,10, 100,2);
+
+        juego.batch.setColor(Color.YELLOW);
+
+        juego.batch.draw(blank, p1.body.getPosition().x-25, 10, p1.getKi(), 2);
+
+
+
+
 
         juego.batch.end();
     }
@@ -285,12 +301,18 @@ public class PrimerMundo implements Screen {
     public void acciones(){
         if(Gdx.input.isKeyPressed(Input.Keys.F)){
             p1.setOnda(true);
+
         }else{
             p1.setOnda(false);
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
-            ondas.add(new Onda(world,p1));
+
+            if(p1.getKi()>10){
+                ondas.add(new Onda(world,p1));
+                p1.setKi(10);
+            }
+
         }
     }
 
