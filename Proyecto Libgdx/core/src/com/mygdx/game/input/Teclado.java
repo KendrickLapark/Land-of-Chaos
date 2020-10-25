@@ -54,7 +54,9 @@ public class Teclado implements InputProcessor {
                 break;
 
             case Input.Keys.X:
-                pj1.setCargando(true);
+                if(pj1.getKi()!=100){
+                    pj1.setCargando(true);
+                }
                 break;
         }
         return true;

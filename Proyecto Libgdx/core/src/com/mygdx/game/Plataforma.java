@@ -39,7 +39,7 @@ public class Plataforma extends Actor {
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(25, 6);
+        polygonShape.setAsBox(6, 6);
         fixtureDef.shape = polygonShape;
         body.createFixture(fixtureDef);
 

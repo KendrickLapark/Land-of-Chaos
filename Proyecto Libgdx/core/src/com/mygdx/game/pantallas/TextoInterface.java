@@ -46,13 +46,23 @@ public class TextoInterface {
 
         Vector3 vector3 = new Vector3(20,40,0);
         camara.unproject(vector3);
-        bitmapFont1.getData().scaleX = 0.25f;
-        bitmapFont1.getData().scaleY = 0.25f;
+        bitmapFont1.getData().scaleX = 0.35f;
+        bitmapFont1.getData().scaleY = 0.35f;
         bitmapFont1.setUseIntegerPositions(false);
 
         bitmapFont1.draw(spriteBatch, "Tiempo: "+tiempototal , vector3.x, vector3.y);
 
+    }
 
+    public static void muestraKi(float ki, float x, float y){ ;
+
+        int kiEntero;
+
+        kiEntero = Math.round(ki);
+
+        bitmapFont1.getData().scaleX = 0.45f;
+        bitmapFont1.getData().scaleY = 0.45f;
+        bitmapFont1.draw(spriteBatch, "Ki:   "+kiEntero , x-75, 13);
     }
 
 }

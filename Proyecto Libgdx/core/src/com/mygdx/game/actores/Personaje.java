@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -27,7 +28,7 @@ import javax.swing.JProgressBar;
 public class Personaje extends Actor {
 
     public enum Direccion  { IZQUIERDA, DERECHA} // Enumerado que indica la dirección del personaje.
-    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA, STANDBY} // Enumerado con distintos estados del personaje.
+    public enum Estado {CALLENDO, SALTANDO, ENLASUPERFICIE, ANDANDO, ENPLATAFORMA, STANDBY, CARGANDO} // Enumerado con distintos estados del personaje.
     public enum Situacion{ AIRE, SUELO} // Enumerado que indica si el personaje esta en el suelo o en el aire.
     public Direccion dActual, dPrevio; // Variable con la direccion actual del personaje.
     public Estado eActual, ePrevio; // Variable con el estado actual y previo del personaje.
@@ -48,13 +49,11 @@ public class Personaje extends Actor {
 
     public ArrayList <Onda> listaOndas; // ArrayList que contiene las ondas lanzadas por el personaje.
 
-    private float animationTime;
+    private float animationTime, ki;
 
     private Boolean rafagazo, bKamehameha, loop, cargando; // Boolean para indicar si el personaje esta lanzando una ráfaga, un kamehameha , y para controlar si las animaciones cuando esta andando se repiten o no.
 
-    public int personajeNumero, indexk, salud, ki; // Variable que indica la opción elegida en la pantalla de elección de personaje, un contador para recorrer el bucle de la animación del personaje andando y la salud del personaje.
-
-    public double tiempo;
+    public int personajeNumero, indexk, salud; // Variable que indica la opción elegida en la pantalla de elección de personaje, un contador para recorrer el bucle de la animación del personaje andando y la salud del personaje.
 
     public Personaje(World mundo, int personajeElegido){
 
@@ -84,6 +83,8 @@ public class Personaje extends Actor {
 
         loop = true;
         cargando = false;
+
+        body.setLinearVelocity(0.1f,0); // introducida un poco de velocidad porque se atasca el sprite si realizamos alguna accion en la posicion inicial.
 
     }
 
@@ -136,10 +137,6 @@ public class Personaje extends Actor {
     public void animacionAcciones(float elapsedTime){
 
             indexk=0;
-
-            tiempo = Math.ceil(Gdx.graphics.getDeltaTime());
-
-        System.out.println("Tiempo----->"+tiempo);
 
             if(body.getPosition().y<-12){
                 salud = 0;
@@ -315,6 +312,7 @@ public class Personaje extends Actor {
                 body.setLinearVelocity(0,0);
             }else if(bKamehameha==false){
                 animationTime=0;
+
             }
 
             if(rafagazo && dActual == Direccion.DERECHA && bKamehameha==false){
@@ -334,7 +332,8 @@ public class Personaje extends Actor {
                 }
             }
 
-            if(cargando == true){
+            if(cargando == true ){
+
 
                 if(dActual == Direccion.DERECHA){
                     sprite = new Sprite(new Texture("personajes/Goku/cargaR2.png"));
@@ -356,6 +355,9 @@ public class Personaje extends Actor {
                 elapsedTime=0;
                 recargaki.stop();
             }
+
+        System.out.println("ESTADO ACTUAL_____>"+eActual);
+        System.out.println("ESTADO PREVIO LOCOOOOOO___>>"+ePrevio);
 
     }
 
@@ -443,13 +445,16 @@ public class Personaje extends Actor {
         cargando = e;
     }
 
-    public int getKi(){ return ki; }
+    public float getKi(){ return ki; }
 
-    public void setKi(int cantKi){
+    public void setKi(float cantKi){
         if(ki>=0){
             ki+=cantKi;
         }
+    }
 
+    public Rectangle getHitBox(){
+        return sprite.getBoundingRectangle();
     }
 
 }

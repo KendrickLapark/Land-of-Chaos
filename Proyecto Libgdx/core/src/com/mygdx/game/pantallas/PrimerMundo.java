@@ -36,10 +36,6 @@ import com.mygdx.game.input.Teclado;
 import com.mygdx.game.objetos.Capsula;
 import com.mygdx.game.objetos.Onda;
 
-import java.util.Iterator;
-
-import javax.swing.Box;
-
 public class PrimerMundo implements Screen {
 
     private Juego juego;
@@ -65,6 +61,7 @@ public class PrimerMundo implements Screen {
     private Array<Onda> ondas, ondasToDestroy;
 
     public int personajeSeleccionado;
+    private float velocidadRecarga;
 
     float elapsedTime;
 
@@ -212,13 +209,14 @@ public class PrimerMundo implements Screen {
 
         renderer.render();
 
-        //box2DDebugRenderer.render(world,camara.combined);
+        box2DDebugRenderer.render(world,camara.combined);
         juego.batch.setProjectionMatrix(camara.combined);
 
         System.out.println("Altura en el eje x"+p1.getCuerpo().getPosition().x);
 
         juego.batch.begin();
         TextoInterface.draw(camara);
+        TextoInterface.muestraKi(p1.getKi(), p1.body.getPosition().x, p1.body.getPosition().y);
          p1.animacionAcciones(elapsedTime);
          p1.draw(juego.batch,0);
 
@@ -228,6 +226,7 @@ public class PrimerMundo implements Screen {
          plataforma.draw(juego.batch,0);
 
          c1.draw(juego.batch,0);
+
 
          for (Onda onda : ondas){
 
@@ -240,18 +239,10 @@ public class PrimerMundo implements Screen {
              dispose();
          }
 
-        //System.out.println("Posicion del player x:"+p1.getCuerpo().getPosition().x+"Posicion y:"+p1.getCuerpo().getPosition().y);
-
          acciones();
 
-        /**
-         * TODO BARRA DE KI
-         * 1. ESTABLECER LA BARRA ESTATICA EN PANTALLA (COMO EL TIEMPO, PRUEBA A PONERLO EN LA MISMA CLASE)
-         * 2. CREAR BOTÓN ESTATICO EN PANTALLA (PISTA: ES UN CONTROL DEL JUEGO)
-         * 3. CREAR VARIABLE "KI" QUE CON EL EVENTO ON CLIC DEL BOTÓN, AUMENTE LA ANCHURA DE LA BARRA (TIP: LA VARIABLE DEBE TENER UN MÁXIMO)
-         * 4. AL LANZAR ONDA DE ENERGIA RESTAR LA VARIABLE KI
-         * 5. SI KI == 0, NO LANZA ONDA
-         */
+        System.out.println("Recoleccion-------------------->"+c1.recoleccion(p1));
+
 
         juego.batch.setColor(Color.GRAY);
         juego.batch.draw(blank,p1.body.getPosition().x-50,10, 100,2);
@@ -259,10 +250,6 @@ public class PrimerMundo implements Screen {
         juego.batch.setColor(Color.YELLOW);
 
         juego.batch.draw(blank, p1.body.getPosition().x-50, 10, p1.getKi(), 2);
-
-
-
-
 
         juego.batch.end();
     }
@@ -299,7 +286,7 @@ public class PrimerMundo implements Screen {
 
     public void acciones(){
         if(Gdx.input.isKeyPressed(Input.Keys.F)){
-            if(p1.getKi()>10){
+            if(p1.getKi()>=10){
                 p1.setOnda(true);
             }
 
@@ -308,15 +295,18 @@ public class PrimerMundo implements Screen {
         }
 
         if(Gdx.input.isKeyPressed(Input.Keys.X)){
-            if(p1.getKi()<=98){
-                p1.setKi(2);
+
+            velocidadRecarga=0.1f;
+
+            if(p1.getKi()<=100-velocidadRecarga){
+                p1.setKi(velocidadRecarga);
             }
 
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)){
 
-            if(p1.getKi()>10){
+            if(p1.getKi()>=10){
                 ondas.add(new Onda(world,p1));
                 p1.setKi(-10);
             }
